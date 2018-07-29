@@ -1,0 +1,351 @@
+"suburb","council_area","region_name","distance_from_city"
+"Abbotsford","Yarra City Council","Northern Metropolitan",2.75
+"Aberfeldie","Moonee Valley City Council","Western Metropolitan",8.3
+"Airport West","Moonee Valley City Council","Western Metropolitan",11.95
+"Albanvale","Brimbank City Council","Western Metropolitan",14
+"Albert Park","Port Phillip City Council","Southern Metropolitan",3.15
+"Albion","Brimbank City Council","Western Metropolitan",12.2
+"Alphington","Darebin City Council","Northern Metropolitan",6.05
+"Altona","Hobsons Bay City Council","Western Metropolitan",12.4
+"Altona Meadows","Hobsons Bay City Council","Western Metropolitan",15.5
+"Altona North","Hobsons Bay City Council","Western Metropolitan",10.25
+"Ardeer","Brimbank City Council","Western Metropolitan",12.8
+"Armadale","Stonnington City Council","Southern Metropolitan",6.3
+"Ascot Vale","Moonee Valley City Council","Western Metropolitan",5.1
+"Ashburton","Boroondara City Council","Southern Metropolitan",10.6
+"Ashwood","Monash City Council","Southern Metropolitan",11.2
+"Aspendale","Kingston City Council","South-Eastern Metropolitan",21.5
+"Aspendale Gardens","Kingston City Council","South-Eastern Metropolitan",21.5
+"Attwood","Hume City Council","Northern Metropolitan",16.5
+"Avondale Heights","Moonee Valley City Council","Western Metropolitan",10
+"Avonsleigh","Cardinia Shire Council","Eastern Victoria",36.9
+"Bacchus Marsh","Moorabool Shire Council","Western Victoria",37.5
+"Balaclava","Port Phillip City Council","Southern Metropolitan",6.5
+"Balwyn","Boroondara City Council","Southern Metropolitan",8.8
+"Balwyn North","Boroondara City Council","Southern Metropolitan",9.45
+"Bayswater","Knox City Council","Eastern Metropolitan",23.2
+"Bayswater North","Maroondah City Council","Eastern Metropolitan",23.2
+"Beaconsfield","Cardinia Shire Council","Eastern Victoria",39
+"Beaconsfield Upper","Cardinia Shire Council","Eastern Victoria",39.8
+"Beaumaris","Bayside City Council","Southern Metropolitan",17.3
+"Belgrave","Yarra Ranges Shire Council","Eastern Victoria",30.4
+"Bellfield","Banyule City Council","Eastern Metropolitan",9.15
+"Bentleigh","Glen Eira City Council","Southern Metropolitan",12.2
+"Bentleigh East","Glen Eira City Council","Southern Metropolitan",13.85
+"Berwick","Casey City Council","Eastern Victoria",35.2
+"Black Rock","Bayside City Council","Southern Metropolitan",17.3
+"Blackburn","Whitehorse City Council","Eastern Metropolitan",13.4
+"Blackburn North","Whitehorse City Council","Eastern Metropolitan",13.4
+"Blackburn South","Whitehorse City Council","Eastern Metropolitan",13.4
+"Bonbeach","Kingston City Council","South-Eastern Metropolitan",27
+"Boronia","Knox City Council","Eastern Metropolitan",25
+"Botanic Ridge","Casey City Council","South-Eastern Metropolitan",34.7
+"Box Hill","Whitehorse City Council","Eastern Metropolitan",12
+"Braybrook","Maribyrnong City Council","Western Metropolitan",9.7
+"Briar Hill","Banyule City Council","Eastern Metropolitan",16.1
+"Brighton","Bayside City Council","Southern Metropolitan",10.85
+"Brighton East","Bayside City Council","Southern Metropolitan",10.5
+"Broadmeadows","Hume City Council","Northern Metropolitan",14
+"Brookfield","Melton City Council","Western Victoria",29.8
+"Brooklyn","Brimbank City Council","Western Metropolitan",8.65
+"Brunswick","Moreland City Council","Northern Metropolitan",5.2
+"Brunswick East","Moreland City Council","Northern Metropolitan",4.25
+"Brunswick West","Moreland City Council","Northern Metropolitan",5.55
+"Bulla","Hume City Council","Western Metropolitan",22.9
+"Bulleen","Manningham City Council","Eastern Metropolitan",11.3
+"Bullengarook","Macedon Ranges Shire Council","Northern Victoria",45.9
+"Bundoora","Banyule City Council","Northern Metropolitan",12.1
+"Burnley","Yarra City Council","Northern Metropolitan",2.95
+"Burnside","Melton City Council","Western Metropolitan",14.8
+"Burnside Heights","Melton City Council","Western Metropolitan",14.8
+"Burwood","Monash City Council","Southern Metropolitan",11.05
+"Burwood East","Whitehorse City Council","Eastern Metropolitan",14.7
+"Cairnlea","Brimbank City Council","Western Metropolitan",14.8
+"Camberwell","Boroondara City Council","Southern Metropolitan",7.75
+"Campbellfield","Hume City Council","Northern Metropolitan",15.55
+"Canterbury","Boroondara City Council","Southern Metropolitan",8.7
+"Carlton","Melbourne City Council","Northern Metropolitan",1.7
+"Carlton North","Melbourne City Council","Northern Metropolitan",3.35
+"Carnegie","Glen Eira City Council","Southern Metropolitan",10.75
+"Caroline Springs","Melton City Council","Western Metropolitan",14.8
+"Carrum","Kingston City Council","South-Eastern Metropolitan",31.2
+"Carrum Downs","Frankston City Council","South-Eastern Metropolitan",34.9
+"Caulfield","Glen Eira City Council","Southern Metropolitan",8.8
+"Caulfield East","Glen Eira City Council","Southern Metropolitan",8.85
+"Caulfield North","Glen Eira City Council","Southern Metropolitan",7.95
+"Caulfield South","Glen Eira City Council","Southern Metropolitan",9
+"Chadstone","Monash City Council","Southern Metropolitan",12.65
+"Chelsea","Kingston City Council","South-Eastern Metropolitan",27
+"Chelsea Heights","Kingston City Council","South-Eastern Metropolitan",27
+"Cheltenham","Bayside City Council","Southern Metropolitan",17.9
+"Chirnside Park","Yarra Ranges Shire Council","Eastern Victoria",27.1
+"Clarinda","Kingston City Council","South-Eastern Metropolitan",17.5
+"Clayton","Monash City Council","South-Eastern Metropolitan",16.7
+"Clayton South","Kingston City Council","South-Eastern Metropolitan",17.5
+"Clifton Hill","Yarra City Council","Northern Metropolitan",3.5
+"Clyde North","Casey City Council","Eastern Victoria",43.4
+"Coburg","Darebin City Council","Northern Metropolitan",7.25
+"Coburg North","Darebin City Council","Northern Metropolitan",7.95
+"Coldstream","Yarra Ranges Shire Council","Eastern Victoria",33
+"Collingwood","Yarra City Council","Northern Metropolitan",1.8
+"Coolaroo","Hume City Council","Northern Metropolitan",17.4
+"Craigieburn","Hume City Council","Northern Metropolitan",20.6
+"Cranbourne","Casey City Council","South-Eastern Metropolitan",34.7
+"Cranbourne East","Casey City Council","South-Eastern Metropolitan",34.7
+"Cranbourne North","Casey City Council","South-Eastern Metropolitan",34.7
+"Cranbourne West","Casey City Council","South-Eastern Metropolitan",34.7
+"Cremorne","Yarra City Council","Northern Metropolitan",2.45
+"croydon","Maroondah City Council","Eastern Metropolitan",23
+"Croydon","Maroondah City Council","Eastern Metropolitan",23
+"Croydon Hills","Maroondah City Council","Eastern Metropolitan",23
+"Croydon North","Maroondah City Council","Eastern Metropolitan",23
+"Croydon South","Maroondah City Council","Eastern Metropolitan",23
+"Dallas","Hume City Council","Northern Metropolitan",14
+"Dandenong","Greater Dandenong City Council","South-Eastern Metropolitan",24.7
+"Dandenong North","Greater Dandenong City Council","South-Eastern Metropolitan",24.7
+"Darley","Moorabool Shire Council","Western Victoria",37.5
+"Deepdene","Boroondara City Council","Southern Metropolitan",7.9
+"Deer Park","Brimbank City Council","Western Metropolitan",14.8
+"Delahey","Brimbank City Council","Western Metropolitan",18
+"Derrimut","Brimbank City Council","Western Metropolitan",14.7
+"Diamond Creek","Nillumbik Shire Council","Northern Victoria",21.8
+"Diggers Rest","Hume City Council","Western Metropolitan",27.7
+"Dingley Village","Kingston City Council","South-Eastern Metropolitan",22.2
+"Docklands","Melbourne City Council","Southern Metropolitan",1.65
+"Doncaster","Manningham City Council","Eastern Metropolitan",13.15
+"Doncaster East","Manningham City Council","Eastern Metropolitan",14.3
+"Donvale","Manningham City Council","Eastern Metropolitan",16.1
+"Doreen","Nillumbik Shire Council","Northern Victoria",25.9
+"Doveton","Casey City Council","South-Eastern Metropolitan",28.8
+"Eaglemont","Banyule City Council","Eastern Metropolitan",9.6
+"East Melbourne","Melbourne City Council","Northern Metropolitan",1.4
+"Edithvale","Kingston City Council","South-Eastern Metropolitan",27
+"Elsternwick","Glen Eira City Council","Southern Metropolitan",7.85
+"Eltham","Banyule City Council","Eastern Metropolitan",18
+"Eltham North","Banyule City Council","Eastern Metropolitan",18
+"Elwood","Port Phillip City Council","Southern Metropolitan",7.45
+"Emerald","Cardinia Shire Council","Eastern Victoria",36.9
+"Endeavour Hills","Casey City Council","South-Eastern Metropolitan",28.5
+"Epping","Whittlesea City Council","Northern Metropolitan",19.6
+"Essendon","Moonee Valley City Council","Western Metropolitan",7.75
+"Essendon North","Moonee Valley City Council","Western Metropolitan",8.8
+"Essendon West","Moonee Valley City Council","Western Metropolitan",8.65
+"Eumemmerring","Casey City Council","South-Eastern Metropolitan",28.8
+"Eynesbury","Melton City Council","Western Victoria",29.8
+"Fairfield","Darebin City Council","Northern Metropolitan",5.75
+"Fawkner","Hume City Council","Northern Metropolitan",12.75
+"Ferntree Gully","Knox City Council","Eastern Metropolitan",24.8
+"Ferny Creek","Yarra Ranges Shire Council","Eastern Victoria",29.5
+"Fitzroy","Yarra City Council","Northern Metropolitan",1.85
+"Fitzroy North","Moreland City Council","Northern Metropolitan",3.55
+"Flemington","Melbourne City Council","Northern Metropolitan",3.9
+"Footscray","Maribyrnong City Council","Western Metropolitan",5.75
+"Forest Hill","Whitehorse City Council","Eastern Metropolitan",15.4
+"Frankston","Frankston City Council","South-Eastern Metropolitan",38
+"Frankston North","Frankston City Council","Eastern Victoria",36.9
+"Frankston South","Frankston City Council","South-Eastern Metropolitan",38
+"Gardenvale","Glen Eira City Council","Southern Metropolitan",8.5
+"Gisborne","Macedon Ranges Shire Council","Northern Victoria",45.9
+"Gisborne South","Macedon Ranges Shire Council","Northern Victoria",45.9
+"Gladstone Park","Hume City Council","Western Metropolitan",12.9
+"Glen Huntly","Glen Eira City Council","Southern Metropolitan",10.25
+"Glen Iris","Boroondara City Council","Southern Metropolitan",8.25
+"Glen Waverley","Monash City Council","Eastern Metropolitan",16.7
+"Glenroy","Moreland City Council","Northern Metropolitan",12.1
+"Gowanbrae","Moreland City Council","Western Metropolitan",13.25
+"Greensborough","Banyule City Council","Northern Metropolitan",16.1
+"Greenvale","Hume City Council","Northern Metropolitan",20.4
+"Guys Hill","Cardinia Shire Council","Eastern Victoria",39
+"Hadfield","Moreland City Council","Northern Metropolitan",11.65
+"Hallam","Casey City Council","South-Eastern Metropolitan",32.3
+"Hampton","Bayside City Council","Southern Metropolitan",13.75
+"Hampton East","Bayside City Council","Southern Metropolitan",14.15
+"Hampton Park","Casey City Council","South-Eastern Metropolitan",33.3
+"Hawthorn","Boroondara City Council","Southern Metropolitan",4.95
+"Hawthorn East","Boroondara City Council","Southern Metropolitan",6.85
+"Healesville","Yarra Ranges Shire Council","Northern Victoria",45.2
+"Heatherton","Kingston City Council","South-Eastern Metropolitan",18.7
+"Heathmont","Maroondah City Council","Eastern Metropolitan",21.3
+"Heidelberg","Banyule City Council","Eastern Metropolitan",9.75
+"Heidelberg Heights","Banyule City Council","Eastern Metropolitan",9.65
+"Heidelberg West","Banyule City Council","Eastern Metropolitan",9.1
+"Highett","Bayside City Council","Southern Metropolitan",16
+"Hillside","Brimbank City Council","Western Metropolitan",18
+"Hopetoun Park","Moorabool Shire Council","Western Victoria",37.5
+"Hoppers Crossing","Wyndham City Council","Western Metropolitan",18.4
+"Hughesdale","Monash City Council","Southern Metropolitan",12.65
+"Huntingdale","Monash City Council","Southern Metropolitan",12.3
+"Hurstbridge","Nillumbik Shire Council","Northern Victoria",26.1
+"Ivanhoe","Banyule City Council","Eastern Metropolitan",7.85
+"Ivanhoe East","Banyule City Council","Eastern Metropolitan",8.4
+"Jacana","Hume City Council","Northern Metropolitan",14.25
+"Kalkallo","Hume City Council","Northern Metropolitan",20.6
+"Kealba","Brimbank City Council","Western Metropolitan",14.5
+"Keilor","Brimbank City Council","Western Metropolitan",14.5
+"Keilor Downs","Brimbank City Council","Western Metropolitan",15.5
+"Keilor East","Brimbank City Council","Western Metropolitan",12.25
+"Keilor Lodge","Brimbank City Council","Western Metropolitan",15.5
+"Keilor Park","Brimbank City Council","Western Metropolitan",12.45
+"Kensington","Melbourne City Council","Northern Metropolitan",3.8
+"Kew","Boroondara City Council","Southern Metropolitan",5.5
+"Kew East","Boroondara City Council","Southern Metropolitan",7.4
+"Keysborough","Greater Dandenong City Council","South-Eastern Metropolitan",25.2
+"Kilsyth","Maroondah City Council","Eastern Metropolitan",26
+"Kings Park","Brimbank City Council","Western Metropolitan",14
+"Kingsbury","Darebin City Council","Northern Metropolitan",12.25
+"Kingsville","Maribyrnong City Council","Western Metropolitan",7.1
+"Knoxfield","Knox City Council","Eastern Metropolitan",23.3
+"Kooyong","Stonnington City Council","Southern Metropolitan",6.05
+"Kurunjang","Melton City Council","Northern Victoria",31.7
+"Lalor","Whittlesea City Council","Northern Metropolitan",16.3
+"Langwarrin","Frankston City Council","Eastern Victoria",41
+"Laverton","Hobsons Bay City Council","Western Metropolitan",15.5
+"Lilydale","Yarra Ranges Shire Council","Eastern Victoria",29.9
+"Lower Plenty","Banyule City Council","Eastern Metropolitan",14.6
+"Lynbrook","Casey City Council","South-Eastern Metropolitan",33.8
+"Lysterfield","Knox City Council","South-Eastern Metropolitan",24.8
+"MacLeod","Banyule City Council","Northern Metropolitan",12.7
+"Maidstone","Maribyrnong City Council","Western Metropolitan",7.8
+"Malvern","Stonnington City Council","Southern Metropolitan",6.65
+"Malvern East","Stonnington City Council","Southern Metropolitan",9.8
+"Maribyrnong","Maribyrnong City Council","Western Metropolitan",6.5
+"McKinnon","Glen Eira City Council","Southern Metropolitan",11.4
+"Meadow Heights","Hume City Council","Northern Metropolitan",17.4
+"Melbourne","Melbourne City Council","Northern Metropolitan",1.4
+"Melton","Melton City Council","Western Victoria",31.7
+"Melton South","Melton City Council","Western Victoria",29.8
+"Melton West","Melton City Council","Northern Victoria",31.7
+"Mentone","Kingston City Council","South-Eastern Metropolitan",20
+"Menzies Creek","Cardinia Shire Council","Eastern Victoria",32.6
+"Mernda","Whittlesea City Council","Northern Metropolitan",25.9
+"Mickleham","Hume City Council","Northern Metropolitan",20.6
+"Middle Park","Port Phillip City Council","Southern Metropolitan",3.55
+"Mill Park","Whittlesea City Council","Northern Metropolitan",17.9
+"Mitcham","Whitehorse City Council","Eastern Metropolitan",17.2
+"Monbulk","Yarra Ranges Shire Council","Eastern Victoria",34.1
+"Mont Albert","Boroondara City Council","Eastern Metropolitan",11
+"Montmorency","Banyule City Council","Eastern Metropolitan",16.2
+"Montrose","Yarra Ranges Shire Council","Eastern Victoria",28.8
+"Moonee Ponds","Moonee Valley City Council","Western Metropolitan",6.55
+"Moorabbin","Kingston City Council","Southern Metropolitan",14.45
+"Mooroolbark","Yarra Ranges Shire Council","Eastern Victoria",26.5
+"Mordialloc","Kingston City Council","South-Eastern Metropolitan",21.5
+"Mount Evelyn","Yarra Ranges Shire Council","Eastern Victoria",31.6
+"Mount Waverley","Monash City Council","Eastern Metropolitan",14.2
+"Mulgrave","Monash City Council","South-Eastern Metropolitan",18.8
+"Murrumbeena","Glen Eira City Council","Southern Metropolitan",11.1
+"Narre Warren","Casey City Council","South-Eastern Metropolitan",34.1
+"New Gisborne","Macedon Ranges Shire Council","Northern Victoria",48.1
+"Newport","Hobsons Bay City Council","Western Metropolitan",7.3
+"Niddrie","Moonee Valley City Council","Western Metropolitan",10.8
+"Noble Park","Greater Dandenong City Council","South-Eastern Metropolitan",22.7
+"North Melbourne","Melbourne City Council","Northern Metropolitan",2.05
+"North Warrandyte","Nillumbik Shire Council","Eastern Metropolitan",21.1
+"Northcote","Darebin City Council","Northern Metropolitan",5.4
+"Notting Hill","Monash City Council","Southern Metropolitan",16.7
+"Nunawading","Manningham City Council","Eastern Metropolitan",15.4
+"Oak Park","Moreland City Council","Northern Metropolitan",11.35
+"Oakleigh","Monash City Council","Southern Metropolitan",13.15
+"Oakleigh East","Monash City Council","Southern Metropolitan",12.3
+"Oakleigh South","Kingston City Council","South-Eastern Metropolitan",15.1
+"Officer","Cardinia Shire Council","Eastern Victoria",43.3
+"Olinda","Yarra Ranges Shire Council","Eastern Victoria",30.6
+"Ormond","Glen Eira City Council","Southern Metropolitan",11.6
+"Pakenham","Cardinia Shire Council","Eastern Victoria",47.3
+"Parkdale","Kingston City Council","South-Eastern Metropolitan",21.5
+"Parkville","Melbourne City Council","Northern Metropolitan",2.2
+"Pascoe Vale","Moreland City Council","Northern Metropolitan",9.2
+"Patterson Lakes","Kingston City Council","South-Eastern Metropolitan",31.2
+"Plenty","Nillumbik Shire Council","Northern Victoria",20.1
+"Plumpton","Melton City Council","Western Metropolitan",23.8
+"Point Cook","Wyndham City Council","Western Metropolitan",14.7
+"Port Melbourne","Melbourne City Council","Southern Metropolitan",3.65
+"Prahran","Stonnington City Council","Southern Metropolitan",4.55
+"Preston","Darebin City Council","Northern Metropolitan",8.6
+"Princes Hill","Yarra City Council","Northern Metropolitan",3.6
+"Research","Nillumbik Shire Council","Eastern Metropolitan",18
+"Reservoir","Darebin City Council","Northern Metropolitan",11.6
+"Richmond","Yarra City Council","Northern Metropolitan",2.5
+"Riddells Creek","Macedon Ranges Shire Council","Northern Victoria",47.4
+"Ringwood","Maroondah City Council","Eastern Metropolitan",19.9
+"Ringwood East","Maroondah City Council","Eastern Metropolitan",21.3
+"Ringwood North","Manningham City Council","Eastern Metropolitan",19.9
+"Ripponlea","Port Phillip City Council","Southern Metropolitan",7.3
+"Rockbank","Melton City Council","Western Metropolitan",23.8
+"Rosanna","Banyule City Council","Eastern Metropolitan",10.15
+"Rowville","Knox City Council","South-Eastern Metropolitan",23.5
+"Roxburgh Park","Hume City Council","Northern Metropolitan",20.6
+"Sandhurst","Frankston City Council","South-Eastern Metropolitan",34.7
+"Sandringham","Bayside City Council","Southern Metropolitan",15.2
+"Scoresby","Knox City Council","Eastern Metropolitan",22.2
+"Seabrook","Hobsons Bay City Council","Western Metropolitan",15.5
+"Seaford","Frankston City Council","South-Eastern Metropolitan",35.4
+"Seaholme","Hobsons Bay City Council","Western Metropolitan",11.85
+"Seddon","Maribyrnong City Council","Western Metropolitan",5.85
+"Silvan","Yarra Ranges Shire Council","Eastern Victoria",34.6
+"Skye","Frankston City Council","South-Eastern Metropolitan",34.7
+"South Kingsville","Hobsons Bay City Council","Western Metropolitan",7.65
+"South Melbourne","Port Phillip City Council","Southern Metropolitan",2
+"South Morang","Whittlesea City Council","Northern Metropolitan",20.5
+"South Yarra","Melbourne City Council","Southern Metropolitan",3
+"Southbank","Melbourne City Council","Southern Metropolitan",0.95
+"Spotswood","Hobsons Bay City Council","Western Metropolitan",6.95
+"Springvale","Greater Dandenong City Council","South-Eastern Metropolitan",20.8
+"Springvale South","Greater Dandenong City Council","South-Eastern Metropolitan",22.2
+"St Albans","Brimbank City Council","Western Metropolitan",14
+"St Helena","Banyule City Council","Eastern Metropolitan",16.1
+"St Kilda","Port Phillip City Council","Southern Metropolitan",5.55
+"Strathmore","Moonee Valley City Council","Western Metropolitan",8.95
+"Strathmore Heights","Moonee Valley City Council","Western Metropolitan",10.35
+"Sunbury","Hume City Council","Western Metropolitan",31.7
+"Sunshine","Brimbank City Council","Western Metropolitan",11.55
+"Sunshine North","Brimbank City Council","Western Metropolitan",11.9
+"Sunshine West","Brimbank City Council","Western Metropolitan",12
+"Surrey Hills","Boroondara City Council","Southern Metropolitan",10.7
+"Sydenham","Brimbank City Council","Western Metropolitan",18
+"Tarneit","Wyndham City Council","Western Metropolitan",18.4
+"Taylors Hill","Melton City Council","Western Metropolitan",18
+"Taylors Lakes","Brimbank City Council","Western Metropolitan",15.5
+"Tecoma","Yarra Ranges Shire Council","Eastern Victoria",30.4
+"Templestowe","Manningham City Council","Eastern Metropolitan",15.5
+"Templestowe Lower","Manningham City Council","Eastern Metropolitan",13.1
+"The Basin","Knox City Council","Eastern Metropolitan",27
+"Thomastown","Whittlesea City Council","Northern Metropolitan",15.3
+"Thornbury","Darebin City Council","Northern Metropolitan",6.75
+"Toorak","Stonnington City Council","Southern Metropolitan",4.35
+"Travancore","Moonee Valley City Council","Western Metropolitan",4.8
+"Truganina","Melton City Council","Western Metropolitan",18.4
+"Tullamarine","Brimbank City Council","Western Metropolitan",12.9
+"Upwey","Yarra Ranges Shire Council","Eastern Victoria",29.3
+"Vermont","Maroondah City Council","Eastern Metropolitan",17.2
+"Vermont South","Whitehorse City Council","Eastern Metropolitan",17.2
+"viewbank","Banyule City Council","Eastern Metropolitan",8.9
+"Viewbank","Banyule City Council","Eastern Metropolitan",11.35
+"Wallan","Mitchell Shire Council","Northern Victoria",44.2
+"Wandin North","Yarra Ranges Shire Council","Eastern Victoria",35.2
+"Wantirna","Knox City Council","Eastern Metropolitan",14.7
+"Wantirna South","Knox City Council","Eastern Metropolitan",14.7
+"Warrandyte","Manningham City Council","Eastern Metropolitan",21.1
+"Warranwood","Maroondah City Council","Eastern Metropolitan",19.9
+"Waterways","Kingston City Council","South-Eastern Metropolitan",21.5
+"Watsonia","Banyule City Council","Northern Metropolitan",14.7
+"Watsonia North","Banyule City Council","Northern Metropolitan",14.5
+"Wattle Glen","Nillumbik Shire Council","Northern Victoria",23.6
+"Werribee","Wyndham City Council","Western Metropolitan",14.7
+"Werribee South","Wyndham City Council","Western Metropolitan",14.7
+"West Footscray","Maribyrnong City Council","Western Metropolitan",7.3
+"West Melbourne","Melbourne City Council","Northern Metropolitan",2.5
+"Westmeadows","Hume City Council","Northern Metropolitan",16.5
+"Wheelers Hill","Monash City Council","South-Eastern Metropolitan",16.7
+"Whittlesea","Whittlesea City Council","Northern Victoria",35.5
+"Wildwood","Hume City Council","Western Metropolitan",31.7
+"Williams Landing","Wyndham City Council","Western Metropolitan",17.6
+"Williamstown","Hobsons Bay City Council","Western Metropolitan",7.4
+"Williamstown North","Hobsons Bay City Council","Western Metropolitan",7.85
+"Windsor","Port Phillip City Council","Southern Metropolitan",4.85
+"Wollert","Whittlesea City Council","Northern Metropolitan",25.5
+"Wonga Park","Manningham City Council","Eastern Victoria",25.2
+"Wyndham Vale","Wyndham City Council","Western Metropolitan",27.2
+"Yallambie","Banyule City Council","Northern Metropolitan",13.85
+"Yarra Glen","Yarra Ranges Shire Council","Northern Victoria",31.4
+"Yarraville","Maribyrnong City Council","Western Metropolitan",6.65

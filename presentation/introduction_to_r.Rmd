@@ -1,0 +1,279 @@
+---
+output:
+  revealjs::revealjs_presentation:
+    theme: solarized
+    highlight: kate
+    transition: fade
+    center: true
+    background_transition: fade
+    reveal_options:
+      slideNumber: true
+---
+
+<h1>R for Data Analysis</h1>
+
+<img data-src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/R_logo.svg/1086px-R_logo.svg.png" height="128" width="128">
+
+<p>Data Science Melbourne - MeDaScIn 2018</p>
+
+<p>Kaushik Lakshman</p>
+
+<p>27 September 2018</p>
+
+# Before we start
+
+## A bit about me
+
+- Kaushik Lakshman, Data Scientist at Betfair 
+- R user since ~2013 & massive R fan since day 1
+- Hoping to infect you with the same passion!
+- No such thing as a stupid question. Interrupt me whenever you have any question
+- Everyone is here to learn, don't want anyone feeling left behind :) 
+- If you have any questions for later, don't hesitate to email me kaushiklakshman@gmail.com
+
+## What we will cover today 
+
+- An introduction to R & its ecosystem
+- Data manipulation/wrangling/munging using dplyr
+- Data visualisation using ggplot2
+- Brief introduction to machine learning 
+- Rmarkdown and dashboards
+
+# Introduction to R
+
+## What is R?
+
+- R is a programming language originally meant for Statistical Computing
+- R is now so much more than that
+- R is about 25 years old, but has really exploded in the last 5 years
+    + Open source and free
+    + Incredible dev community (a package for everything)
+    + Barrier to entry reduced 
+
+## What can you do in R? 
+
+- Access data from a variety of systems (files, databases, streams)
+- Manipulate data (and fix or create data)
+- Visualise data
+- Model data 
+- Report data (Commentary, insights, visualisations, summaries)
+- A host of other modern tools
+    + Web applications
+    + Dashboards
+    + Packages
+    + Emoji! 
+    + Music! 
+    + Emails! 
+    
+## Why is R popular these days? 
+
+- Incredible community around R programming and especially R learning
+- R Studio's packages and approach to making analysis easy 
+- Help and Documentation 
+- Stack overflow & Rstudio community 
+- Twitter, Linkedin and social media
+
+## RStudio 
+
+- RStudio is the defacto IDE for R Programming
+- Free to download and has very well thought out ease of use features 
+    + Code, Console, Environment and Plots/Help on the same window 
+    + Auto complete code and auto formatting 
+    + Tons of little features to customise according to your liking 
+- Has the brightest minds in data science working towards making it easier for other data scientists : Hadley Wickham, Jim Hester, Max Kuhn, Mine Cetinkaya Rundel, Yihui Xie, JJ Alaire
+
+## Basic Syntax
+
+- Mathematical expressions are evaluated as a calculator
+```{r}
+3+3
+```
+
+- You can assign values to variables using the assignment operator `<-` 
+```{r}
+quick_maths <- 2 + 2 - 1
+```
+
+- You can print values by just typing their name of the variable
+```{r}
+quick_maths
+```
+
+## Functions
+
+- Functions take in values and return something 
+- Functions are meant to be consistent - Same output for same inputs
+- R provides several built in functions
+
+```{r}
+sum(1,2,3) ## Adding 1, 2 and 3
+sqrt(25) ## Finding square root of 25
+```
+
+## Packages
+
+- Inbuilt functions only cover a subset of what one needs to do on a day to day basis
+- Packages exist to service this need 
+- Packages are maintained in a centralised repository called CRAN
+- Packages can also be obtained from other sources
+- Packages are installed using the function `install.packages("package_name")`
+- Installed packages are loaded to your environment using `library(package_name)`
+
+## Packages 
+
+- Let us try install a very useful package called lubridate
+- Lubridate makes it easier to work with dates and times
+
+```{r eval=FALSE}
+install.packages("lubridate")
+```
+
+```{r message=FALSE}
+library(lubridate)
+
+## ymd converts a date in the format YYYY-MM-DD to a date class 
+an_example_date <- lubridate::ymd("2018-09-27")
+class(an_example_date)
+
+## Adding 5 days to an_example_date
+an_example_date + lubridate::days(5)
+```
+
+## Basic Data Types
+
+- Everything in R is an object
+- Main atomic data types are: charcter, numeric, logical
+- Use the class function to find out what data type your object is
+
+```{r}
+name <- "Kaushik" ## Character
+age <- 29 ## Numeric
+```
+
+```{r}
+class(name)
+class(age)
+```
+
+## Basic Data Types
+
+- Collection of these atomic structures are called vectors 
+- You can create vectors using the function `c()`
+
+```{r}
+cities_in_australia <- c("Melbourne", "Sydney", "Brisbane") ## Vector of Chars
+ten_natural_numbers <- c(1:10) ## Vector of numerics
+```
+
+```{r}
+cities_in_australia
+ten_natural_numbers
+```
+
+## Data Frames
+
+- Most important data structure in R
+- Combination of Vectors 
+- Rectangular structure (most data in the world)
+- Has Rows and Columns 
+- R has some pre loaded data frames to play around with what they look like 
+
+## Data Frames
+
+```{r}
+## Creating your own data frame
+my_first_data_frame <-
+data.frame(city = c("Melbourne","Sydney","Canberra"),
+           is_capital = c(FALSE,FALSE,TRUE))
+```
+
+```{r}
+my_first_data_frame
+class(my_first_data_frame)
+```
+
+## Data Frames
+```{r}
+## Pre loaded data frame
+data(mtcars)
+```
+
+```{r}
+## Use the head function to sample a subset of rows
+## because most data frames will be too long to print everything
+head(mtcars, 3)
+```
+
+```{r}
+## Use str to inspect the data frame at a glance
+str(mtcars)
+```
+
+## Getting data in and out of R
+
+- Data can be available in several formats for analysis
+    * Files
+    * Databases
+    * APIs 
+- We can use the appropriate packages to load data from any system to R
+- Today we will be working only with CSV files, for which we will need the `read_csv` and `write_csv` functions
+- These are available through an incredible `tidyverse` package that we will learn about 
+```{r eval=FALSE}
+install.packages("tidyverse")
+```
+
+## Getting data in and out of R 
+
+```{r message=FALSE}
+## Loading package tidyverse
+library(tidyverse)
+
+## Loading Melbourne Housing Dataset
+melbourne_housing <- read_csv("C:/Workspace/r-learning/data/processed/melbourne_housing_market.csv")
+
+glimpse(melbourne_housing)
+```
+
+## Getting data in and out of R
+```{r eval=FALSE}
+## Getting data from Excel to R
+data_from_excel <- readxl::read_xlsx(path = "My_file.xlsx",
+                                     sheet = "Main Sheet")
+
+## Loading R data structure
+data_from_rds <- readRDS(file = "saved_object.RDS")
+
+## Getting data from database
+library(odbc)
+mysql_connection <- odbc::dbConnect(odbc(), 
+                                    Driver = "SQL Server", 
+                                    Server = "localhost\\SQLEXPRESS", 
+                                    Database = "datawarehouse", 
+                                    Trusted_Connection = "True")
+
+my_table_data <- odbc::dbGetQuery(conn = mysql_connection, 
+                                  statement = "SELECT * FROM my_table")
+```
+
+## Introduction to Tidyverse
+
+- Tidyverse is a collection of packages
+- The packages share an underlying design philosophy, grammar of usage and data structures
+- The tidy data principles state that 
+     * Each variable is a column
+     * Each observation is a row 
+     * Each type of observational unit forms a table
+```{r}
+## The dataset we loaded is tidy
+head(melbourne_housing, 3)
+```
+
+# Data Wrangling with dplyr
+
+# Data Visualisation with ggplot2
+
+# Introduction to Machine Learning 
+
+# Documenting Analysis with Rmarkdown
+
+# Thank You

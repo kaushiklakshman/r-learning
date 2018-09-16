@@ -3,8 +3,8 @@ output:
   revealjs::revealjs_presentation:
     theme: solarized
     highlight: kate
+    css: styles.css
     transition: fade
-    center: true
     background_transition: fade
     reveal_options:
       slideNumber: true
@@ -269,6 +269,187 @@ head(melbourne_housing, 3)
 ```
 
 # Data Wrangling with dplyr
+
+## What is dplyr? 
+
+- Data manipulation is really easy and intuitive now because of the `dplyr` package (Contained in `tidyverse`)
+- You can use other techniques that base R and other packages provide to do the same stuff but with `dplyr` you don't need to know that anymore!
+- `dplyr` is the next evolution of the `plyr` package specifically tuned for data frames and having easy and consistent data wrangling features
+
+## Piping 
+
+- Piping comes from a package called `magrittr`
+- Piping allows you to chain consecutive steps of a data manipulation pipeline
+- In order of how it is executed as opposed to traditional programming syntax
+- Piping is really useful while building dplyr command chains
+
+```{r eval=FALSE}
+## Non Piping 
+output <- function3(function2(function1(x)))
+
+## Piping 
+output <- x %>% 
+  function1() %>%
+  function2() %>%
+  function3
+```
+
+## Select
+
+- Select lets you keep only a subset of variables from a data frame
+
+```{r}
+melbourne_housing %>%
+  select(address, suburb)
+```
+
+## Filter 
+
+- Filter lets you keep only a subset of observations that satisy a condition 
+
+```{r}
+melbourne_housing %>%
+  filter(suburb == "Southbank")
+```
+
+## Filter
+
+- You can use any logical operators `>`, `<`, `==`, `!=`
+- You can combine multiple logical operators using `&` and `|`
+
+```{r}
+melbourne_housing %>%
+  filter(suburb == "Mount Waverley" & rooms >= 3 & price <= 1000000)
+```
+
+## Arrange
+
+- Arrange lets you sort your data frame by any column you specify
+- Defaut order is ascending but we can use `desc()` to sort in descending order
+
+```{r}
+melbourne_housing %>%
+  filter(suburb == "Mount Waverley" & rooms >= 3 & price <= 1000000) %>%
+  arrange(desc(rooms), price)
+```
+
+## Rename
+
+- Rename lets you rename your columns to anything you want 
+
+```{r}
+melbourne_housing %>%
+  select(address, suburb) %>%
+  rename(suburb_name = suburb)
+```
+
+## Mutate 
+
+- Mutate lets you create new columns or variables 
+
+```{r}
+melbourne_housing %>%
+  filter(suburb == "Toorak" & price >= 1000000) %>%
+  select(address, suburb, price) %>%
+  mutate(price_in_millions = price/1000000)
+```
+
+## Basic functions wrap up
+
+- Select: Choose columns you want 
+- Filter: Choose rows that you want based on conditions 
+- Arrange: Sort based on any column(s)
+- Rename: Change names of existing columns
+- Mutate: Create new columns
+- Quick test: Can you write a dplyr chain to give me all the addresses, suburbs and prices for those properties that were townhouses (type is 't') and sold for more than 1.2 million sorted by descending order of price?
+
+## Basic functions test
+
+```{r}
+melbourne_housing %>%
+  filter(type == 't' & price > 1200000) %>%
+  select(address, suburb, price) %>%
+  arrange(desc(price))
+```
+
+## Group & Summarise
+
+- Data analysis is usually done on rolled up groups
+- Collect multiple rows into a set and study summarised statistics for them 
+- `dplyr` provides the `group_by` function to let you do this
+- Once grouped, we can use the `summarise` function to reduce multiple values to one value
+
+```{r}
+melbourne_housing %>%
+  group_by(suburb) %>%
+  summarise(mean_price = mean(price, na.rm = TRUE))
+```
+
+## Summarise 
+
+- Summarise function gives you a bunch of options 
+    * `n()` counting rows
+    * `n_distinct()` counting unique rows
+    * `sum()` summing a variable 
+    * `mean()` average of a variable 
+    * `median()` median of a variable 
+    * and several more 
+    
+```{r}
+## Counting number of houses that sold
+## for > 2 million in Brighton and Toorak
+melbourne_housing %>%
+  filter(suburb == "Toorak" | suburb == "Brighton") %>%
+  filter(price > 2000000) %>%
+  group_by(suburb) %>%
+  summarise(number_of_houses = n())
+```
+
+## Another quick test 
+
+- Out of all the units that were sold 
+- give me a list of suburbs 
+- that sold units of price > 1m 
+- and how many of such units each suburb had 
+- Expected answer below 
+
+```{r echo=FALSE}
+melbourne_housing %>% 
+  filter(type == "u") %>%
+  filter(price > 1000000) %>%
+  group_by(suburb) %>%
+  summarise(number_of_units = n())
+```
+
+## Another quick test - answer 
+
+```{r}
+melbourne_housing %>% 
+  filter(type == "u") %>%
+  filter(price > 1000000) %>%
+  group_by(suburb) %>%
+  summarise(number_of_units = n())
+```
+
+## Window functions 
+
+- There are also several window functions that let you work within groups created by group_by
+- For example, in the previous example instead of just listing the suburbs, you might want to rank them 
+- Examples of window functions available are 
+    * `dense_rank()`, `min_rank()`, `row_number()`
+    * `cumsum()` , `cummean()`
+    * `lead()`, `lag()`
+    
+```{r}
+melbourne_housing %>% 
+  filter(type == "u") %>%
+  filter(price > 1000000) %>%
+  group_by(suburb) %>%
+  summarise(number_of_units = n()) %>% 
+  mutate(suburb_rank = dense_rank(desc(number_of_units))) %>%
+  arrange(suburb_rank)
+```
+
 
 # Data Visualisation with ggplot2
 

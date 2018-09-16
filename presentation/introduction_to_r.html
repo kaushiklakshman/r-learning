@@ -99,6 +99,7 @@ code > span. { color: #1f1c1b; } /* Normal */
 
     <style type="text/css">code{white-space: pre;}</style>
 
+    <link href="data:text/css;charset=utf-8,%2Ereveal%20section%20ul%20%7B%0Afont%2Dsize%3A%200%2E7em%3B%0A%7D%0A%2Ereveal%20section%20pre%20code%20%7B%0Afont%2Dsize%3A%201%2E0em%3B%0A%7D" rel="stylesheet" />
 
 <!-- Printing and PDF exports -->
 <script id="paper-css" type="application/dynamic-css">
@@ -773,7 +774,319 @@ my_table_data &lt;-<span class="st"> </span>odbc<span class="op">::</span><span 
 ## 2 Abbotsford 59A Turner St     3 h     1220000 S      Marshall      1/04/~
 ## 3 Abbotsford 119B Yarra St     3 h     1420000 S      Nelson        1/04/~</code></pre>
 </section></section>
-<section><section id="data-wrangling-with-dplyr" class="titleslide slide level1"><h1>Data Wrangling with dplyr</h1></section></section>
+<section><section id="data-wrangling-with-dplyr" class="titleslide slide level1"><h1>Data Wrangling with dplyr</h1></section><section id="what-is-dplyr" class="slide level2">
+<h2>What is dplyr?</h2>
+<ul>
+<li>Data manipulation is really easy and intuitive now because of the <code>dplyr</code> package (Contained in <code>tidyverse</code>)</li>
+<li>You can use other techniques that base R and other packages provide to do the same stuff but with <code>dplyr</code> you don’t need to know that anymore!</li>
+<li><code>dplyr</code> is the next evolution of the <code>plyr</code> package specifically tuned for data frames and having easy and consistent data wrangling features</li>
+</ul>
+</section><section id="piping" class="slide level2">
+<h2>Piping</h2>
+<ul>
+<li>Piping comes from a package called <code>magrittr</code></li>
+<li>Piping allows you to chain consecutive steps of a data manipulation pipeline</li>
+<li>In order of how it is executed as opposed to traditional programming syntax</li>
+<li>Piping is really useful while building dplyr command chains</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Non Piping 
+output &lt;-<span class="st"> </span><span class="kw">function3</span>(<span class="kw">function2</span>(<span class="kw">function1</span>(x)))
+
+## Piping 
+output &lt;-<span class="st"> </span>x <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">function1</span>() <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">function2</span>() <span class="op">%&gt;%</span>
+<span class="st">  </span>function3</code></pre></div>
+</section><section id="select" class="slide level2">
+<h2>Select</h2>
+<ul>
+<li>Select lets you keep only a subset of variables from a data frame</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">melbourne_housing <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">select</span>(address, suburb)</code></pre></div>
+<pre><code>## # A tibble: 56,737 x 2
+##    address           suburb      
+##    &lt;chr&gt;             &lt;chr&gt;       
+##  1 49 Lithgow St     Abbotsford  
+##  2 59A Turner St     Abbotsford  
+##  3 119B Yarra St     Abbotsford  
+##  4 68 Vida St        Aberfeldie  
+##  5 92 Clydesdale Rd  Airport West
+##  6 4/32 Earl St      Airport West
+##  7 3/74 Hawker St    Airport West
+##  8 1/26 Highridge Cr Airport West
+##  9 1 Jackson Cct     Albanvale   
+## 10 18 Mills St       Albert Park 
+## # ... with 56,727 more rows</code></pre>
+</section><section id="filter" class="slide level2">
+<h2>Filter</h2>
+<ul>
+<li>Filter lets you keep only a subset of observations that satisy a condition</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">melbourne_housing <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter</span>(suburb <span class="op">==</span><span class="st"> &quot;Southbank&quot;</span>)</code></pre></div>
+<pre><code>## # A tibble: 97 x 8
+##    suburb    address        rooms type   price method selling_agent dt    
+##    &lt;chr&gt;     &lt;chr&gt;          &lt;int&gt; &lt;chr&gt;  &lt;int&gt; &lt;chr&gt;  &lt;chr&gt;         &lt;chr&gt; 
+##  1 Southbank 1902/63 White~     2 u     630000 SP     MICM          1/04/~
+##  2 Southbank 173/38 Kavana~     2 u     512000 S      MICM          2/06/~
+##  3 Southbank 191/173 City ~     3 u     801000 S      MICM          3/02/~
+##  4 Southbank 58/88 Southba~     2 u     530000 S      MICM          3/02/~
+##  5 Southbank 3/106 Southba~     2 u     717000 S      RT            3/03/~
+##  6 Southbank 801/151 City ~     3 u     765000 S      MICM          3/06/~
+##  7 Southbank 512/22 Dorcas~     1 u     422000 S      MICM          3/06/~
+##  8 Southbank 83/88 Kavanag~     2 u         NA PI     Lucas         3/06/~
+##  9 Southbank 2605/63 White~     2 u     590000 PI     MICM          3/06/~
+## 10 Southbank 41/106 Southb~     3 u     720000 S      VICPROP       3/09/~
+## # ... with 87 more rows</code></pre>
+</section><section id="filter-1" class="slide level2">
+<h2>Filter</h2>
+<ul>
+<li>You can use any logical operators <code>&gt;</code>, <code>&lt;</code>, <code>==</code>, <code>!=</code></li>
+<li>You can combine multiple logical operators using <code>&amp;</code> and <code>|</code></li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">melbourne_housing <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter</span>(suburb <span class="op">==</span><span class="st"> &quot;Mount Waverley&quot;</span> <span class="op">&amp;</span><span class="st"> </span>rooms <span class="op">&gt;=</span><span class="st"> </span><span class="dv">3</span> <span class="op">&amp;</span><span class="st"> </span>price <span class="op">&lt;=</span><span class="st"> </span><span class="dv">1000000</span>)</code></pre></div>
+<pre><code>## # A tibble: 109 x 8
+##    suburb         address    rooms type   price method selling_agent dt   
+##    &lt;chr&gt;          &lt;chr&gt;      &lt;int&gt; &lt;chr&gt;  &lt;int&gt; &lt;chr&gt;  &lt;chr&gt;         &lt;chr&gt;
+##  1 Mount Waverley 44 Smyth ~     4 h     980000 SP     Barry         1/04~
+##  2 Mount Waverley 11 Mauree~     3 h     944000 S      Jellis        1/07~
+##  3 Mount Waverley 3/24 Adri~     3 t     592000 S      McGrath       2/06~
+##  4 Mount Waverley 2/18 Leon~     3 h     855000 S      McGrath       3/06~
+##  5 Mount Waverley 1/7 Headi~     3 t     975000 S      Buxton        3/09~
+##  6 Mount Waverley 20 Sampso~     3 h     967000 SP     Barry         3/09~
+##  7 Mount Waverley 25 Tuhans~     3 h     976000 S      Ray           3/12~
+##  8 Mount Waverley 2/34 Brig~     3 t     800000 S      Buxton        4/03~
+##  9 Mount Waverley 2/47 Doyn~     3 h     950000 PI     hockingstuart 4/03~
+## 10 Mount Waverley 14/38 Sam~     3 t     835000 S      hockingstuart 4/03~
+## # ... with 99 more rows</code></pre>
+</section><section id="arrange" class="slide level2">
+<h2>Arrange</h2>
+<ul>
+<li>Arrange lets you sort your data frame by any column you specify</li>
+<li>Defaut order is ascending but we can use <code>desc()</code> to sort in descending order</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">melbourne_housing <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter</span>(suburb <span class="op">==</span><span class="st"> &quot;Mount Waverley&quot;</span> <span class="op">&amp;</span><span class="st"> </span>rooms <span class="op">&gt;=</span><span class="st"> </span><span class="dv">3</span> <span class="op">&amp;</span><span class="st"> </span>price <span class="op">&lt;=</span><span class="st"> </span><span class="dv">1000000</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(rooms), price)</code></pre></div>
+<pre><code>## # A tibble: 109 x 8
+##    suburb         address   rooms type   price method selling_agent dt    
+##    &lt;chr&gt;          &lt;chr&gt;     &lt;int&gt; &lt;chr&gt;  &lt;int&gt; &lt;chr&gt;  &lt;chr&gt;         &lt;chr&gt; 
+##  1 Mount Waverley 460 Wave~     6 h     941000 S      Barry         27/06~
+##  2 Mount Waverley 69 Bruce~     5 h     855000 PI     Jellis        17/03~
+##  3 Mount Waverley 6 Meliss~     5 h     927000 S      McGrath       28/05~
+##  4 Mount Waverley 1/51 Wil~     4 u     775000 PI     Barry         10/12~
+##  5 Mount Waverley 1/25 Sad~     4 t     803000 S      McGrath       16/06~
+##  6 Mount Waverley 1/30 Sad~     4 t     830000 S      Barry         6/08/~
+##  7 Mount Waverley 1/42 Bri~     4 u     850000 S      Barry         28/05~
+##  8 Mount Waverley 21 Rolan~     4 h     940000 S      Barry         17/02~
+##  9 Mount Waverley 81 There~     4 h     950000 VB     Stockdale     14/04~
+## 10 Mount Waverley 489 Wave~     4 h     950000 S      Barry         16/04~
+## # ... with 99 more rows</code></pre>
+</section><section id="rename" class="slide level2">
+<h2>Rename</h2>
+<ul>
+<li>Rename lets you rename your columns to anything you want</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">melbourne_housing <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">select</span>(address, suburb) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">rename</span>(<span class="dt">suburb_name =</span> suburb)</code></pre></div>
+<pre><code>## # A tibble: 56,737 x 2
+##    address           suburb_name 
+##    &lt;chr&gt;             &lt;chr&gt;       
+##  1 49 Lithgow St     Abbotsford  
+##  2 59A Turner St     Abbotsford  
+##  3 119B Yarra St     Abbotsford  
+##  4 68 Vida St        Aberfeldie  
+##  5 92 Clydesdale Rd  Airport West
+##  6 4/32 Earl St      Airport West
+##  7 3/74 Hawker St    Airport West
+##  8 1/26 Highridge Cr Airport West
+##  9 1 Jackson Cct     Albanvale   
+## 10 18 Mills St       Albert Park 
+## # ... with 56,727 more rows</code></pre>
+</section><section id="mutate" class="slide level2">
+<h2>Mutate</h2>
+<ul>
+<li>Mutate lets you create new columns or variables</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">melbourne_housing <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter</span>(suburb <span class="op">==</span><span class="st"> &quot;Toorak&quot;</span> <span class="op">&amp;</span><span class="st"> </span>price <span class="op">&gt;=</span><span class="st"> </span><span class="dv">1000000</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">select</span>(address, suburb, price) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">price_in_millions =</span> price<span class="op">/</span><span class="dv">1000000</span>)</code></pre></div>
+<pre><code>## # A tibble: 118 x 4
+##    address           suburb   price price_in_millions
+##    &lt;chr&gt;             &lt;chr&gt;    &lt;int&gt;             &lt;dbl&gt;
+##  1 1/62 Mathoura Rd  Toorak 1850000              1.85
+##  2 5/568 Toorak Rd   Toorak 1600000              1.60
+##  3 113 Grange Rd     Toorak 2800000              2.80
+##  4 5 Theodore Ct     Toorak 4000000              4.00
+##  5 3/24 Lascelles Av Toorak 1800000              1.80
+##  6 3/14 Martin Ct    Toorak 2000000              2.00
+##  7 9 Devorgilla Av   Toorak 4300000              4.30
+##  8 1/3 Glover Ct     Toorak 1435000              1.44
+##  9 10 Myoora Rd      Toorak 5500000              5.50
+## 10 232 Williams Rd   Toorak 1635000              1.64
+## # ... with 108 more rows</code></pre>
+</section><section id="basic-functions-wrap-up" class="slide level2">
+<h2>Basic functions wrap up</h2>
+<ul>
+<li>Select: Choose columns you want</li>
+<li>Filter: Choose rows that you want based on conditions</li>
+<li>Arrange: Sort based on any column(s)</li>
+<li>Rename: Change names of existing columns</li>
+<li>Mutate: Create new columns</li>
+<li>Quick test: Can you write a dplyr chain to give me all the addresses, suburbs and prices for those properties that were townhouses (type is ‘t’) and sold for more than 1.2 million sorted by descending order of price?</li>
+</ul>
+</section><section id="basic-functions-test" class="slide level2">
+<h2>Basic functions test</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">melbourne_housing <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter</span>(type <span class="op">==</span><span class="st"> 't'</span> <span class="op">&amp;</span><span class="st"> </span>price <span class="op">&gt;</span><span class="st"> </span><span class="dv">1200000</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">select</span>(address, suburb, price) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(price))</code></pre></div>
+<pre><code>## # A tibble: 843 x 3
+##    address          suburb        price
+##    &lt;chr&gt;            &lt;chr&gt;         &lt;int&gt;
+##  1 10A Dawson Av    Brighton    3820000
+##  2 65 Caroline St   South Yarra 3475000
+##  3 10A Hartley St   Brighton    3275000
+##  4 1/19 Wallace Av  Toorak      3155000
+##  5 7/202 Nepean Hwy Aspendale   3125000
+##  6 81 Carpenter St  Brighton    2900000
+##  7 82A Were St      Brighton    2900000
+##  8 25 Lindsay St    Brighton    2800000
+##  9 32 Milton Pde    Malvern     2750000
+## 10 11 Church St     Toorak      2700000
+## # ... with 833 more rows</code></pre>
+</section><section id="group-summarise" class="slide level2">
+<h2>Group &amp; Summarise</h2>
+<ul>
+<li>Data analysis is usually done on rolled up groups</li>
+<li>Collect multiple rows into a set and study summarised statistics for them</li>
+<li><code>dplyr</code> provides the <code>group_by</code> function to let you do this</li>
+<li>Once grouped, we can use the <code>summarise</code> function to reduce multiple values to one value</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">melbourne_housing <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">group_by</span>(suburb) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">summarise</span>(<span class="dt">mean_price =</span> <span class="kw">mean</span>(price, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>))</code></pre></div>
+<pre><code>## # A tibble: 385 x 2
+##    suburb         mean_price
+##    &lt;chr&gt;               &lt;dbl&gt;
+##  1 Abbotsford       1046322.
+##  2 Aberfeldie       1304669.
+##  3 Airport West      766103.
+##  4 Albanvale         504050.
+##  5 Albert Park      1948920.
+##  6 Albion            617753.
+##  7 Alphington       1410197.
+##  8 Altona            889231.
+##  9 Altona Meadows    630024.
+## 10 Altona North      791006.
+## # ... with 375 more rows</code></pre>
+</section><section id="summarise" class="slide level2">
+<h2>Summarise</h2>
+<ul>
+<li>Summarise function gives you a bunch of options
+<ul>
+<li><code>n()</code> counting rows</li>
+<li><code>n_distinct()</code> counting unique rows</li>
+<li><code>sum()</code> summing a variable</li>
+<li><code>mean()</code> average of a variable</li>
+<li><code>median()</code> median of a variable</li>
+<li>and several more</li>
+</ul></li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Counting number of houses that sold
+## for &gt; 2 million in Brighton and Toorak
+melbourne_housing <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter</span>(suburb <span class="op">==</span><span class="st"> &quot;Toorak&quot;</span> <span class="op">|</span><span class="st"> </span>suburb <span class="op">==</span><span class="st"> &quot;Brighton&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter</span>(price <span class="op">&gt;</span><span class="st"> </span><span class="dv">2000000</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">group_by</span>(suburb) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">summarise</span>(<span class="dt">number_of_houses =</span> <span class="kw">n</span>())</code></pre></div>
+<pre><code>## # A tibble: 2 x 2
+##   suburb   number_of_houses
+##   &lt;chr&gt;               &lt;int&gt;
+## 1 Brighton              157
+## 2 Toorak                 62</code></pre>
+</section><section id="another-quick-test" class="slide level2">
+<h2>Another quick test</h2>
+<ul>
+<li>Out of all the units that were sold</li>
+<li>give me a list of suburbs</li>
+<li>that sold units of price &gt; 1m</li>
+<li>and how many of such units each suburb had</li>
+<li>Expected answer below</li>
+</ul>
+<pre><code>## # A tibble: 86 x 2
+##    suburb       number_of_units
+##    &lt;chr&gt;                  &lt;int&gt;
+##  1 Abbotsford                 5
+##  2 Aberfeldie                 1
+##  3 Albert Park                2
+##  4 Altona                     5
+##  5 Armadale                   5
+##  6 Ashburton                  2
+##  7 Ashwood                    2
+##  8 Balwyn                    14
+##  9 Balwyn North              15
+## 10 Beaumaris                  2
+## # ... with 76 more rows</code></pre>
+</section><section id="another-quick-test---answer" class="slide level2">
+<h2>Another quick test - answer</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">melbourne_housing <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">filter</span>(type <span class="op">==</span><span class="st"> &quot;u&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter</span>(price <span class="op">&gt;</span><span class="st"> </span><span class="dv">1000000</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">group_by</span>(suburb) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">summarise</span>(<span class="dt">number_of_units =</span> <span class="kw">n</span>())</code></pre></div>
+<pre><code>## # A tibble: 86 x 2
+##    suburb       number_of_units
+##    &lt;chr&gt;                  &lt;int&gt;
+##  1 Abbotsford                 5
+##  2 Aberfeldie                 1
+##  3 Albert Park                2
+##  4 Altona                     5
+##  5 Armadale                   5
+##  6 Ashburton                  2
+##  7 Ashwood                    2
+##  8 Balwyn                    14
+##  9 Balwyn North              15
+## 10 Beaumaris                  2
+## # ... with 76 more rows</code></pre>
+</section><section id="window-functions" class="slide level2">
+<h2>Window functions</h2>
+<ul>
+<li>There are also several window functions that let you work within groups created by group_by</li>
+<li>For example, in the previous example instead of just listing the suburbs, you might want to rank them</li>
+<li>Examples of window functions available are
+<ul>
+<li><code>dense_rank()</code>, <code>min_rank()</code>, <code>row_number()</code></li>
+<li><code>cumsum()</code> , <code>cummean()</code></li>
+<li><code>lead()</code>, <code>lag()</code></li>
+</ul></li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">melbourne_housing <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">filter</span>(type <span class="op">==</span><span class="st"> &quot;u&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter</span>(price <span class="op">&gt;</span><span class="st"> </span><span class="dv">1000000</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">group_by</span>(suburb) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">summarise</span>(<span class="dt">number_of_units =</span> <span class="kw">n</span>()) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">suburb_rank =</span> <span class="kw">dense_rank</span>(<span class="kw">desc</span>(number_of_units))) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">arrange</span>(suburb_rank)</code></pre></div>
+<pre><code>## # A tibble: 86 x 3
+##    suburb         number_of_units suburb_rank
+##    &lt;chr&gt;                    &lt;int&gt;       &lt;int&gt;
+##  1 Port Melbourne              47           1
+##  2 South Yarra                 39           2
+##  3 Brighton                    37           3
+##  4 Toorak                      33           4
+##  5 Melbourne                   30           5
+##  6 Glen Waverley               19           6
+##  7 Balwyn North                15           7
+##  8 Balwyn                      14           8
+##  9 Camberwell                  14           8
+## 10 Richmond                    13           9
+## # ... with 76 more rows</code></pre>
+</section></section>
 <section><section id="data-visualisation-with-ggplot2" class="titleslide slide level1"><h1>Data Visualisation with ggplot2</h1></section></section>
 <section><section id="introduction-to-machine-learning" class="titleslide slide level1"><h1>Introduction to Machine Learning</h1></section></section>
 <section><section id="documenting-analysis-with-rmarkdown" class="titleslide slide level1"><h1>Documenting Analysis with Rmarkdown</h1></section></section>
@@ -794,7 +1107,7 @@ my_table_data &lt;-<span class="st"> </span>odbc<span class="op">::</span><span 
         // Push each slide change to the browser history
         history: true,
         // Vertical centering of slides
-        center: true,
+        center: false,
         // Transition style
         transition: 'fade', // none/fade/slide/convex/concave/zoom
         // Transition style for full page slide backgrounds

@@ -361,9 +361,9 @@ melbourne_housing %>%
 - Arrange: Sort based on any column(s)
 - Rename: Change names of existing columns
 - Mutate: Create new columns
-- Quick test: Can you write a dplyr chain to give me all the addresses, suburbs and prices for those properties that were townhouses (type is 't') and sold for more than 1.2 million sorted by descending order of price?
+- Quick practice: Can you write a dplyr chain to give me all the addresses, suburbs and prices for those properties that were townhouses (type is 't') and sold for more than 1.2 million sorted by descending order of price?
 
-## Basic functions test
+## Basic functions Quick practice - Answer
 
 ```{r}
 melbourne_housing %>%
@@ -405,7 +405,7 @@ melbourne_housing %>%
   summarise(number_of_houses = n())
 ```
 
-## Another quick test 
+## Another quick practice session
 
 - Out of all the units that were sold 
 - give me a list of suburbs 
@@ -421,7 +421,7 @@ melbourne_housing %>%
   summarise(number_of_units = n())
 ```
 
-## Another quick test - answer 
+## Another quick practice session - Solution 
 
 ```{r}
 melbourne_housing %>% 
@@ -448,6 +448,228 @@ melbourne_housing %>%
   summarise(number_of_units = n()) %>% 
   mutate(suburb_rank = dense_rank(desc(number_of_units))) %>%
   arrange(suburb_rank)
+```
+
+## Another quick practice 
+
+- For each suburb
+- what percentage of total property sales 
+- are houses, apartments and units 
+- Clue: group by suburb and type, find count of properties, then mutate to find percentage
+- Expected answer is 
+
+```{r echo=FALSE}
+melbourne_housing %>%
+  group_by(suburb, type) %>%
+  summarise(number_of_properties = n()) %>%
+  mutate(percentage_of_properties = number_of_properties/sum(number_of_properties)*100)
+```
+
+## Another quick practice - Solution 
+
+```{r}
+melbourne_housing %>%
+  group_by(suburb, type) %>%
+  summarise(number_of_properties = n()) %>%
+  mutate(percentage_of_properties = number_of_properties/sum(number_of_properties)*100)
+```
+
+## Spread and gather
+
+- Data anlaysis often requires conversion from wide data format to narrow data format
+
+```{r echo=FALSE}
+narrow_data_frame <- data.frame(name = c("Alice", "Bob"),
+                                subject = c("Maths", "Science", "English"),
+                                marks = c(90, 90, 85, 75, 75, 60)) %>%
+  arrange(name, subject)
+
+wide_data_frame <- narrow_data_frame %>% spread(subject, marks)
+
+narrow_data_frame
+wide_data_frame
+```
+
+- The functions that allow for this kind of conversion are `spread()` and `gather()`
+
+## Spread and gather - example
+
+```{r}
+## Same percentage of total calculation from couple of slides ago
+wide_data_frame <- melbourne_housing %>%
+  group_by(suburb, type) %>%
+  summarise(number_of_properties = n()) %>%
+  mutate(percentage_of_properties = number_of_properties/sum(number_of_properties)*100) %>%
+  select(suburb, type, percentage_of_properties) %>%
+  spread(type, percentage_of_properties)
+
+wide_data_frame
+```
+
+## Spread and gather - example 
+
+```{r}
+narrow_data_frame <- wide_data_frame %>%
+  gather("type", "percentage_of_properties", h, t, u)
+
+narrow_data_frame
+```
+
+## Binding 
+
+- Sometimes we have to bind two data frames together to get a combined data frame
+- The functions to do this are `bind_rows` for binding by rows and `bind_cols` for binding by columns
+
+```{r echo=FALSE}
+richmond <- melbourne_housing %>%
+  filter(suburb == "Richmond") %>% 
+  group_by(suburb, type) %>%
+  summarise(number_of_properties = n()) %>%
+  ungroup()
+
+
+hawthorn <- melbourne_housing %>%
+  filter(suburb == "Hawthorn") %>% 
+  group_by(suburb, type) %>%
+  summarise(number_of_properties = n()) %>%
+  ungroup()
+```
+
+```{r}
+hawthorn
+richmond
+```
+
+## Binding 
+```{r}
+bind_rows(hawthorn, richmond)
+```
+
+## Joins 
+
+- Data frames are not always going to be allow you to bind them
+- When two different data frames containing two different pieces of information need to be connected we use joins
+- Joins come from set theory and there are several types
+    * Inner join
+    * Left join
+    * Right join
+    * Full join
+    * Semi join
+    * Anti join
+    
+<img src = "http://r4ds.had.co.nz/diagrams/join-venn.png">
+
+## Joins example
+
+- Some extra data is available in the suburb file such as council, region and distance
+- If we need to do anlaysis on this level of granularity we need information from this data
+- Let us first load the data using our good friend `read_csv`
+
+```{r message=FALSE}
+suburb_data <- read_csv("C:/Workspace/r-learning/data/processed/suburb_data.csv")
+
+suburb_data
+```
+
+## Joins example
+
+- If we want to find out the median property price by council 
+- We have to join `melbourne_housing` to `suburb_data` 
+- and then use what we have learnt with `group_by` and `summarise`
+
+```{r}
+melbourne_housing %>%
+  inner_join(suburb_data, by = "suburb") %>%
+  group_by(council_area) %>%
+  summarise(median_property_price = median(price, na.rm = TRUE))
+```
+
+## Practice Question 1 
+
+- Assuming real estate agents charge 2% of sold price as commission, can you give me the list of all agents and how much commission they made in the calendar year 2017 in descending order
+- Hint: convert `dt` from charcter to date using `lubridate::dmy(dt)` and extract the year using `lubridate::year(dt)`. Also don't forget to use `na.rm = TRUE` in your summary function.
+- Expected answer 
+
+```{r echo=FALSE, warning=FALSE}
+melbourne_housing %>%
+  mutate(dt = lubridate::dmy(dt)) %>%
+  mutate(yr = lubridate::year(dt)) %>%
+  filter(yr == 2017) %>%
+  group_by(selling_agent) %>%
+  summarise(total_commission = 0.02 * sum(price, na.rm = TRUE)) %>%
+  arrange(desc(total_commission))
+```
+
+## Practice Question 1 - Solution
+
+```{r warning=FALSE}
+melbourne_housing %>%
+  mutate(dt = lubridate::dmy(dt)) %>%
+  mutate(yr = lubridate::year(dt)) %>%
+  filter(yr == 2017) %>%
+  group_by(selling_agent) %>%
+  summarise(total_commission = 0.02 * sum(price, na.rm = TRUE)) %>%
+  arrange(desc(total_commission))
+```
+
+## Practice Question 2 
+
+- What are the top 5 most expensive suburbs in descending order (by median house price) that are less than 10 km away from the city
+- Hint: Join with `suburb_data` & use `distance_from_city` & use `row_number` or `dense_rank` to rank the suburbs
+- Expected answer is 
+
+```{r echo=FALSE}
+melbourne_housing %>%
+  inner_join(suburb_data, by = "suburb") %>%
+  filter(distance_from_city < 10) %>%
+  group_by(suburb) %>%
+  summarise(median_house_price = median(price, na.rm = TRUE)) %>%
+  mutate(rnk = row_number(desc(median_house_price))) %>%
+  filter(rnk <= 5) %>%
+  arrange(rnk)
+```
+
+## Practice Question 2 - Solution
+
+```{r}
+melbourne_housing %>%
+  inner_join(suburb_data, by = "suburb") %>%
+  filter(distance_from_city < 10) %>%
+  group_by(suburb) %>%
+  summarise(median_house_price = median(price, na.rm = TRUE)) %>%
+  mutate(rnk = row_number(desc(median_house_price))) %>%
+  filter(rnk <= 5) %>%
+  arrange(rnk)
+```
+
+## Practice Question 3
+
+- I'd like a table of suburbs in the 10km to 20km from the city range, in the eastern metropolitan region, and I'd like to compare of what the median prices of properties are based on whether they have 2, 3, or 4 bedrooms
+- Hint: Use `spread` after grouping to get one row for each suburb
+- Expected Answer is
+
+```{r echo=FALSE}
+melbourne_housing %>%
+  inner_join(suburb_data, by = "suburb") %>%
+  filter(distance_from_city >= 10 & distance_from_city <=20) %>%
+  filter(region_name == "Eastern Metropolitan") %>%
+  filter(rooms %in% c(2,3,4)) %>%
+  group_by(suburb, rooms) %>%
+  summarise(median_price = median(price, na.rm = TRUE)) %>%
+  spread(rooms, median_price)
+```
+
+## Practice Question 3 - Solution
+
+```{r}
+melbourne_housing %>%
+  inner_join(suburb_data, by = "suburb") %>%
+  filter(distance_from_city >= 10 & distance_from_city <=20) %>%
+  filter(region_name == "Eastern Metropolitan") %>%
+  filter(rooms %in% c(2,3,4)) %>%
+  group_by(suburb, rooms) %>%
+  summarise(median_price = median(price, na.rm = TRUE)) %>%
+  spread(rooms, median_price)
 ```
 
 

@@ -5,6 +5,8 @@ output:
     highlight: kate
     css: styles.css
     transition: fade
+    fig_width: 6
+    fig_height: 4
     background_transition: fade
     reveal_options:
       slideNumber: true
@@ -36,8 +38,7 @@ output:
 - An introduction to R & its ecosystem
 - Data manipulation/wrangling/munging using dplyr
 - Data visualisation using ggplot2
-- Brief introduction to machine learning 
-- Rmarkdown and dashboards
+- Rmarkdown and related tools
 
 # Introduction to R
 
@@ -672,11 +673,740 @@ melbourne_housing %>%
   spread(rooms, median_price)
 ```
 
-
 # Data Visualisation with ggplot2
 
-# Introduction to Machine Learning 
+## Introduction to plotting in R 
 
-# Documenting Analysis with Rmarkdown
+- Originally base R provided for simple plotting mechanisms 
+- Just a simple call of `plot()` or `hist()` makes it easy to visualise data
+- But it is not very flexible, nor is it consistent 
+
+```{r}
+options(scipen = 1000000)
+docklands <- melbourne_housing %>%
+  filter(suburb == "Docklands") %>%
+  filter(!is.na(price))
+plot(docklands$rooms, docklands$price)
+```
+
+## ggplot and grammar of graphics
+
+- This is where `ggplot2` was written, as a way to define grammar of graphics
+- A consistent structure to build a plot 
+- One system, learn one time, reapply many times for different graphics
+- Break down plotting into different layers
+- Every ggplot consists of 3 major components
+    * The data (For example the melbourne_housing data frame)
+    * The geom (Say a scatter plot)
+    * The aesthetic mappings (what the x axis should be, what the y axis should be)
+
+## Our first ggplot
+
+```{r warning=FALSE}
+ggplot(docklands) + 
+  geom_point(aes(x = rooms,
+                 y = price))
+```
+
+## Adding colour 
+
+- Lets say we want to distinguish houses, townhouses and units by different colours
+```{r warning=FALSE}
+ggplot(docklands) + 
+  geom_point(aes(x = rooms, y = price, colour = type))
+```
+
+## Adding nice labels 
+
+```{r}
+ggplot(docklands) + 
+  geom_point(aes(x = rooms, y = price, colour = type)) + 
+  labs(x = "Rooms", y = "Price", title = "Docklands Properties")
+```
+
+## Other types of geoms
+
+- Now that you've seen how easy it is to create ggplots, lets have a look at some other geoms commonly used 
+- Histograms: To study the underlying distribution of a variable
+- Boxplot: Alternative way to study distribution, but with median, IQR etc
+- Bar plot: To study how categorical variables are represented 
+- Line plot: To study trends of a variable
+
+## Histograms
+
+- Lets have a look at the distribution of property prices in the Melbourne council region
+- We can create the data frame to send to the plot by first running the required `dplyr` code and then piping that into the `ggplot` function
+
+```{r eval=FALSE}
+melbourne_housing %>%
+  inner_join(suburb_data, by = "suburb") %>%
+  filter(council_area == "Melbourne City Council") %>%
+  ggplot() +
+  geom_histogram(aes(x = price)) + 
+  labs(x = "Price",
+       y = "Number of properties")
+```
+
+## Histograms
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, fig.height=6, fig.width=8}
+melbourne_housing %>%
+  inner_join(suburb_data, by = "suburb") %>%
+  filter(council_area == "Melbourne City Council") %>%
+  ggplot() +
+  geom_histogram(aes(x = price)) + 
+  labs(x = "Price",
+       y = "Number of properties")
+```
+
+## Boxplot
+
+- Lets plot the same thing, but lets have a look at the distribution from a different angle
+- Also lets split it up by the suburbs in the region to see if there's any difference
+
+```{r eval=FALSE}
+melbourne_housing %>%
+  inner_join(suburb_data, by = "suburb") %>%
+  filter(council_area == "Melbourne City Council") %>%
+  ggplot() +
+  geom_boxplot(aes(x = suburb, y = price, fill = suburb)) + 
+  labs(x = "Suburb",
+       y = "Price",
+       title = "Price distribution of Melbourne City Council")
+```
+
+
+## Boxplot
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, fig.height=6, fig.width=8}
+melbourne_housing %>%
+  inner_join(suburb_data, by = "suburb") %>%
+  filter(council_area == "Melbourne City Council") %>%
+  ggplot() +
+  geom_boxplot(aes(x = suburb, y = price, fill = suburb)) + 
+  labs(x = "Suburb",
+       y = "Price",
+       title = "Price distribution of Melbourne City Council")
+```
+
+## Bar Plot 
+
+- Bar plots require your data to be in narrow form as opposed to wide form 
+- Remember to use `spread` & `gather` as necessary if you need to convert the data
+- Bar plots can be very intelligent and customisable, but today we will learn the most basic form `stat = "identity"`. This just means that the y axis value you supply should be used as it is, without any transformations
+
+```{r eval=FALSE}
+melbourne_housing %>%
+  inner_join(suburb_data, by = "suburb") %>%
+  filter(council_area == "Melbourne City Council") %>%
+  group_by(suburb) %>%
+  summarise(number_of_properties = n()) %>%
+  ggplot() +
+  geom_bar(aes(x = suburb, y = number_of_properties, fill = suburb),
+           stat = "identity") + 
+  labs(x = "Suburb", y = "Number of Properties",
+       title = "Properties sold in Melbourne City Council")
+```
+
+## Bar Plot 
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, fig.height=6, fig.width=8}
+melbourne_housing %>%
+  inner_join(suburb_data, by = "suburb") %>%
+  filter(council_area == "Melbourne City Council") %>%
+  group_by(suburb) %>%
+  summarise(number_of_properties = n()) %>%
+  ggplot() +
+  geom_bar(aes(x = suburb, y = number_of_properties, fill = suburb),
+           stat = "identity") + 
+  labs(x = "Suburb", y = "Number of Properties",
+       title = "Properties sold in Melbourne City Council")
+```
+
+## Line Plot
+
+- Line plots are really useful if you want to track the flow of a metric along a number line
+- Typically these are used to display time based trends 
+- Structure very similar to bar plot but instead you use `geom_line`
+- Different lines can be coloured but `ggplot` also requires each line to be its own `group`
+
+```{r eval=FALSE}
+melbourne_housing %>%
+  inner_join(suburb_data, by = "suburb") %>%
+  filter(council_area == "Melbourne City Council") %>%
+  mutate(dt = lubridate::dmy(dt)) %>%
+  mutate(yr = lubridate::floor_date(dt, unit = "year")) %>%
+  group_by(suburb, yr) %>%
+  summarise(median_house_price = median(price, na.rm = TRUE)) %>%
+  ggplot() +
+  geom_line(aes(x = yr,
+                y = median_house_price,
+                group = suburb,
+                colour = suburb)) +
+  labs(x = "Year", y = "Median Price", title = "Price Trend")
+```
+
+## Line Plot 
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, fig.height=6, fig.width=8}
+melbourne_housing %>%
+  inner_join(suburb_data, by = "suburb") %>%
+  filter(council_area == "Melbourne City Council") %>%
+  mutate(dt = lubridate::dmy(dt)) %>%
+  mutate(yr = lubridate::floor_date(dt, unit = "year")) %>%
+  group_by(suburb, yr) %>%
+  summarise(median_house_price = median(price, na.rm = TRUE)) %>%
+  ggplot() +
+  geom_line(aes(x = yr,
+                y = median_house_price,
+                group = suburb,
+                colour = suburb)) +
+  labs(x = "Year", y = "Median Price", title = "Price Trend")
+```
+
+## Customising your ggplots
+
+- Now that we know how to make basic charts in ggplot we can explore the power of customisation 
+- How to change colours 
+- Zooming out and in
+- Manipulating shapes and sizes of scatter plot
+- Transformation of scales
+- Facets
+
+## Colours 
+- R gives you a bunch of default colour palettes to choose from
+- This <a href = "https://www.nceas.ucsb.edu/~frazier/RSpatialGuides/colorPaletteCheatsheet.pdf">cheatsheet</a> has lot of details but lets focus on the bottom left of the last page
+- Lets build a simiar box plot to what we built earlier, but for Bayside City Council
+- The only difference is, we have specified a `scale_fill_brewer`
+- If we are changing the colour for a colour element it will be `scale_colour_brewer`
+
+```{r eval=FALSE}
+melbourne_housing %>%
+  inner_join(suburb_data, by = "suburb") %>%
+  filter(council_area == "Bayside City Council") %>%
+  ggplot() +
+  geom_boxplot(aes(x = suburb, y = price, fill = suburb)) + 
+  labs(x = "Suburb",
+       y = "Price",
+       title = "Price distribution of Bayside City Council") +
+  scale_fill_brewer(palette = "Paired")
+```
+
+## Colours
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, fig.height=6, fig.width=8}
+melbourne_housing %>%
+  inner_join(suburb_data, by = "suburb") %>%
+  filter(council_area == "Bayside City Council") %>%
+  ggplot() +
+  geom_boxplot(aes(x = suburb, y = price, fill = suburb)) + 
+  labs(x = "Suburb",
+       y = "Price",
+       title = "Price distribution of Bayside City Council") +
+  scale_fill_brewer(palette = "Paired")
+```
+
+## Zooming
+
+- In the chart we just created, one super expensive house in Brighton really spoiled the scale for everything else
+- While we were able to see that Cheltenham, Hampton East and Highett were clearly lower value suburbs than the others, we couldn't see subtle differences
+- ggplot gives you a `coord_cartesian` function to let you zoom in on specific sections of your plot 
+
+```{r eval=FALSE}
+melbourne_housing %>%
+  inner_join(suburb_data, by = "suburb") %>%
+  filter(council_area == "Bayside City Council") %>%
+  ggplot() +
+  geom_boxplot(aes(x = suburb, y = price, fill = suburb)) + 
+  labs(x = "Suburb",
+       y = "Price",
+       title = "Price distribution of Bayside City Council") +
+  scale_fill_brewer(palette = "Paired") + 
+  coord_cartesian(ylim = c(0, 3000000))
+```
+
+## Zooming 
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, fig.height=6, fig.width=8}
+melbourne_housing %>%
+  inner_join(suburb_data, by = "suburb") %>%
+  filter(council_area == "Bayside City Council") %>%
+  ggplot() +
+  geom_boxplot(aes(x = suburb, y = price, fill = suburb)) + 
+  labs(x = "Suburb",
+       y = "Price",
+       title = "Price distribution of Bayside City Council") +
+  scale_fill_brewer(palette = "Paired") + 
+  coord_cartesian(ylim = c(0, 3000000))
+```
+
+## Shapes, sizes, alpha
+
+- Lets build a scatter plot that visualises distance from city and median property price for 3 metro regions
+- A simple scatter plot will look like this (we have learnt to colour, so we will add colour)
+
+```{r eval=FALSE}
+melbourne_housing %>%
+  inner_join(suburb_data, by = "suburb") %>%
+  filter(region_name %in% c("Southern Metropolitan",
+                            "South-Eastern Metropolitan",
+                            "Eastern Metropolitan")) %>%
+  group_by(region_name, council_area, suburb, distance_from_city) %>%
+  summarise(median_property_price = median(price, na.rm = TRUE)) %>%
+  ggplot() + 
+  geom_point(aes(x = distance_from_city,
+                 y = median_property_price,
+                 colour = region_name)) +
+  labs(x = "Distance From City",
+       y = "Median Property Price",
+       tilte = "Relationship between distance and price") + 
+  scale_color_manual(values = c("blue","red","green"))
+```
+
+## Shapes, sizes and alpha
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, fig.height=6, fig.width=8}
+melbourne_housing %>%
+  inner_join(suburb_data, by = "suburb") %>%
+  filter(region_name %in% c("Southern Metropolitan",
+                            "South-Eastern Metropolitan",
+                            "Eastern Metropolitan")) %>%
+  group_by(region_name, council_area, suburb, distance_from_city) %>%
+  summarise(median_property_price = median(price, na.rm = TRUE)) %>%
+  ggplot() + 
+  geom_point(aes(x = distance_from_city,
+                 y = median_property_price,
+                 colour = region_name)) +
+  labs(x = "Distance From City",
+       y = "Median Property Price",
+       tilte = "Relationship between distance and price") + 
+  scale_color_manual(values = c("blue","red","green"))
+```
+
+## Shapes
+
+- Instead of distinguishing the region by colour, ggplot also allows you to distinguish by other options
+- Lets try different shapes for our scatter plot points
+- Simlar code, except instead of `colour` you will specify `shape`
+
+```{r eval=FALSE}
+melbourne_housing %>%
+  inner_join(suburb_data, by = "suburb") %>%
+  filter(region_name %in% c("Southern Metropolitan",
+                            "South-Eastern Metropolitan",
+                            "Eastern Metropolitan")) %>%
+  group_by(region_name, council_area, suburb, distance_from_city) %>%
+  summarise(median_property_price = median(price, na.rm = TRUE)) %>%
+  ggplot() + 
+  geom_point(aes(x = distance_from_city,
+                 y = median_property_price,
+                 shape = region_name)) +
+  labs(x = "Distance From City",
+       y = "Median Property Price",
+       tilte = "Relationship between distance and price")
+```
+
+## Shapes
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, fig.height=6, fig.width=8}
+melbourne_housing %>%
+  inner_join(suburb_data, by = "suburb") %>%
+  filter(region_name %in% c("Southern Metropolitan",
+                            "South-Eastern Metropolitan",
+                            "Eastern Metropolitan")) %>%
+  group_by(region_name, council_area, suburb, distance_from_city) %>%
+  summarise(median_property_price = median(price, na.rm = TRUE)) %>%
+  ggplot() + 
+  geom_point(aes(x = distance_from_city,
+                 y = median_property_price,
+                 shape = region_name)) +
+  labs(x = "Distance From City",
+       y = "Median Property Price",
+       tilte = "Relationship between distance and price")
+```
+
+## Shapes
+
+- You can also have the shape and size be mapped to different variables
+- Lets replicate the same chart but have colour mapped to region but shape mapped to council
+
+```{r eval=FALSE}
+melbourne_housing %>%
+  inner_join(suburb_data, by = "suburb") %>%
+  filter(region_name %in% c("Southern Metropolitan",
+                            "South-Eastern Metropolitan",
+                            "Eastern Metropolitan")) %>%
+  group_by(region_name, council_area, suburb, distance_from_city) %>%
+  summarise(median_property_price = median(price, na.rm = TRUE)) %>%
+  ggplot() + 
+  geom_point(aes(x = distance_from_city,
+                 y = median_property_price,
+                 shape = council_area,
+                 colour = region_name)) +
+  labs(x = "Distance From City",
+       y = "Median Property Price",
+       tilte = "Relationship between distance and price") +
+  scale_colour_brewer(palette = "Dark2") + 
+  scale_shape_manual(values = c(1:17))
+```
+
+## Shapes
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, fig.height=6, fig.width=8}
+melbourne_housing %>%
+  inner_join(suburb_data, by = "suburb") %>%
+  filter(region_name %in% c("Southern Metropolitan",
+                            "South-Eastern Metropolitan",
+                            "Eastern Metropolitan")) %>%
+  group_by(region_name, council_area, suburb, distance_from_city) %>%
+  summarise(median_property_price = median(price, na.rm = TRUE)) %>%
+  ggplot() + 
+  geom_point(aes(x = distance_from_city,
+                 y = median_property_price,
+                 shape = council_area,
+                 colour = region_name)) +
+  labs(x = "Distance From City",
+       y = "Median Property Price",
+       tilte = "Relationship between distance and price") +
+  scale_colour_brewer(palette = "Dark2") + 
+  scale_shape_manual(values = c(1:17))
+```
+
+## Sizes
+
+- ggplot also allows you to customise the size of your points 
+- Typically if you want to donate a third value in a chart to show proportion we can alter the size of the point according to a value
+- Same example, but say we want to investigate whether a suburb like Brighton, does it just have a few high valued properties or does it score high on volume as well
+
+```{r eval=FALSE}
+melbourne_housing %>%
+  inner_join(suburb_data, by = "suburb") %>%
+  filter(council_area == "Bayside City Council") %>%
+  group_by(council_area, suburb, distance_from_city) %>%
+  summarise(median_property_price = median(price, na.rm = TRUE),
+            number_of_sales = n()) %>%
+  ggplot() + 
+  geom_point(aes(x = distance_from_city,
+                 y = median_property_price,
+                 colour = suburb,
+                 size = number_of_sales)) +
+  labs(x = "Distance From City",
+       y = "Median Property Price",
+       tilte = "Relationship between distance and price") +
+  scale_colour_brewer(palette = "Spectral")
+```
+
+## Sizes
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, fig.height=6, fig.width=8}
+melbourne_housing %>%
+  inner_join(suburb_data, by = "suburb") %>%
+  filter(council_area == "Bayside City Council") %>%
+  group_by(council_area, suburb, distance_from_city) %>%
+  summarise(median_property_price = median(price, na.rm = TRUE),
+            number_of_sales = n()) %>%
+  ggplot() + 
+  geom_point(aes(x = distance_from_city,
+                 y = median_property_price,
+                 colour = suburb,
+                 size = number_of_sales)) +
+  labs(x = "Distance From City",
+       y = "Median Property Price",
+       tilte = "Relationship between distance and price") +
+  scale_colour_brewer(palette = "Spectral")
+```
+
+## Alpha
+
+- ggplot also allows you to customise the opacity of your points
+- Can be used as an alternative to size
+- Lets have a look at the same chart but with alpha instead of size
+- alpha can be set as a value between 0 and 1 where 0.9 is closer to opaque and 0.1 is closer to transparent
+
+```{r eval=FALSE}
+melbourne_housing %>%
+  inner_join(suburb_data, by = "suburb") %>%
+  filter(council_area == "Bayside City Council") %>%
+  group_by(council_area, suburb, distance_from_city) %>%
+  summarise(median_property_price = median(price, na.rm = TRUE),
+            number_of_sales = n()) %>%
+  ggplot() + 
+  geom_point(aes(x = distance_from_city,
+                 y = median_property_price,
+                 colour = suburb,
+                 size = 4,
+                 alpha = number_of_sales)) +
+  labs(x = "Distance From City",
+       y = "Median Property Price",
+       tilte = "Relationship between distance and price") +
+  scale_colour_brewer(palette = "Spectral")
+```
+
+## Alpha
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, fig.height=6, fig.width=8}
+melbourne_housing %>%
+  inner_join(suburb_data, by = "suburb") %>%
+  filter(council_area == "Bayside City Council") %>%
+  group_by(council_area, suburb, distance_from_city) %>%
+  summarise(median_property_price = median(price, na.rm = TRUE),
+            number_of_sales = n()) %>%
+  ggplot() + 
+  geom_point(aes(x = distance_from_city,
+                 y = median_property_price,
+                 colour = suburb,
+                 size = 4,
+                 alpha = number_of_sales)) +
+  labs(x = "Distance From City",
+       y = "Median Property Price",
+       tilte = "Relationship between distance and price") +
+  scale_colour_brewer(palette = "Spectral")
+```
+
+## Facets
+
+- Until now we have learnt how to change several aesthetics, use several geoms and create some great graphs
+- Sometimes we may want to overlay different panels of graphs together showing something very similar 
+- ggplot allows you to do this over facets
+- Lets try and plot how property sales vary between houses, townhouses and units in the Monash City Council
+
+```{r eval=FALSE}
+melbourne_housing %>%
+  inner_join(suburb_data, by = "suburb") %>%
+  filter(council_area == "Monash City Council") %>%
+  group_by(suburb, type) %>%
+  summarise(median_property_value = median(price, na.rm = TRUE)) %>%
+  ggplot() +
+  geom_bar(aes(x = suburb, y = median_property_value, fill = suburb),
+           stat = "identity") + 
+  facet_wrap(~ type, nrow = 3, ncol = 1) + 
+  labs(x = "Suburb", y = "Median Property Value")
+```
+
+## Facets
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, fig.height=6, fig.width=8}
+melbourne_housing %>%
+  inner_join(suburb_data, by = "suburb") %>%
+  filter(council_area == "Monash City Council") %>%
+  group_by(suburb, type) %>%
+  summarise(median_property_value = median(price, na.rm = TRUE)) %>%
+  ggplot() +
+  geom_bar(aes(x = suburb, y = median_property_value, fill = suburb),
+           stat = "identity") + 
+  facet_wrap(~ type, nrow = 3, ncol = 1) + 
+  labs(x = "Suburb", y = "Median Property Value")
+```
+
+## Themes
+
+- ggplot offers a lot of customisability on plot themes
+- There are several inbuilt theme presets like `theme_minimal`, `theme_classic` etc 
+- You can also create your own theme using the `theme` function if you want to 
+- Replicating the same facet plot from the previous slide 
+
+```{r eval=FALSE}
+melbourne_housing %>%
+  inner_join(suburb_data, by = "suburb") %>%
+  filter(council_area == "Monash City Council") %>%
+  group_by(suburb, type) %>%
+  summarise(median_property_value = median(price, na.rm = TRUE)) %>%
+  ggplot() +
+  geom_bar(aes(x = suburb, y = median_property_value, fill = suburb),
+           stat = "identity") + 
+  facet_wrap(~ type, nrow = 3, ncol = 1) + 
+  labs(x = "Suburb", y = "Median Property Value") + 
+  theme_minimal()
+```
+
+## Themes
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, fig.height=6, fig.width=8}
+melbourne_housing %>%
+  inner_join(suburb_data, by = "suburb") %>%
+  filter(council_area == "Monash City Council") %>%
+  group_by(suburb, type) %>%
+  summarise(median_property_value = median(price, na.rm = TRUE)) %>%
+  ggplot() +
+  geom_bar(aes(x = suburb, y = median_property_value, fill = suburb),
+           stat = "identity") + 
+  facet_wrap(~ type, nrow = 3, ncol = 1) + 
+  labs(x = "Suburb", y = "Median Property Value") + 
+  theme_minimal()
+```
+
+## Practice Question 1 
+
+- I'd like to plot a monthly trend line of how median property prices are tracking for each region 
+- Hint: Use `lubridate::dmy(dt)` to convert `dt` to a date format and use `lubridate::floor_date(dt, unit = "month")` to extract the month 
+- Hint: Use `geom_line()` with x axis as the month, y axis as median price, and group and colour as `region_name` from `suburb_data`
+- Expected output is 
+
+```{r echo=FALSE, fig.width=6, fig.height=3.5}
+melbourne_housing %>%
+  inner_join(suburb_data, by = "suburb") %>%
+  mutate(dt = lubridate::dmy(dt)) %>%
+  mutate(mth = lubridate::floor_date(dt, unit = "month")) %>%
+  group_by(region_name, mth) %>%
+  summarise(median_property_price = median(price, na.rm=TRUE)) %>%
+  ggplot() + 
+  geom_line(aes(x = mth, y = median_property_price,
+                group = region_name, colour = region_name)) + 
+  labs(x = "Month", y = "Median Property Price",
+       tilte = "Region wise property prices")
+```
+
+## Practice Question 1 - Solution
+
+```{r eval=FALSE}
+melbourne_housing %>%
+  inner_join(suburb_data, by = "suburb") %>%
+  mutate(dt = lubridate::dmy(dt)) %>%
+  mutate(mth = lubridate::floor_date(dt, unit = "month")) %>%
+  group_by(region_name, mth) %>%
+  summarise(median_property_price = median(price, na.rm=TRUE)) %>%
+  ggplot() + 
+  geom_line(aes(x = mth, y = median_property_price,
+                group = region_name, colour = region_name)) + 
+  labs(x = "Month", y = "Median Property Price",
+       tilte = "Region wise property prices")
+```
+
+## Practice Question 2
+
+- I'm looking at properties in Ringwood, Ringwood North and Ringwood East and I want to get an idea on the distribution of prices and visualise how much an extra room costs
+- Hint: Use a boxplot to showcase the distribution and Use facets to compare at all 3 suburbs at once
+- Hint: Convert rooms to character using `as.charcater(rooms)` otherwise ggplot thinks rooms is an integer continous variable
+- Expected output is
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, fig.width=6, fig.height=3.5}
+melbourne_housing %>%
+  filter(suburb %in% c("Ringwood", "Ringwood North", "Ringwood East")) %>%
+  mutate(rooms = as.character(rooms)) %>%
+  ggplot() + 
+  geom_boxplot(aes(x = rooms, y = price, group =rooms, fill = rooms)) + 
+  facet_wrap(~ suburb, nrow = 1, ncol = 3) + 
+  labs(x = "Rooms", y = "Price")
+```
+
+## Practice Question 2 - Solution
+
+```{r eval=FALSE}
+melbourne_housing %>%
+  filter(suburb %in% c("Ringwood", "Ringwood North", "Ringwood East")) %>%
+  mutate(rooms = as.character(rooms)) %>%
+  ggplot() + 
+  geom_boxplot(aes(x = rooms, y = price, group = rooms, fill = rooms)) + 
+  facet_wrap(~ suburb, nrow = 1, ncol = 3) + 
+  labs(x = "Rooms", y = "Price")
+```
+
+## Practice Question 3
+
+- I want to see what is the break up of property sales in the Port Phillip City Council by suburb, and I'm keen on knowing what percentage of all sales is units, townhouses and houses for each suburb
+- Hint: Use `summarise` and `mutate` to create percentage of total metric
+- Hint: Use `geom_bar` to create a stacked bar chart. Once you create your chart try adding `position = position_dodge()` to the `geom_bar` part of the code and see what changes
+- Expected output is 
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, fig.width=6, fig.height=3.5}
+melbourne_housing %>%
+  inner_join(suburb_data, by="suburb") %>%
+  filter(council_area == "Port Phillip City Council") %>%
+  group_by(suburb, type) %>%
+  summarise(number_of_properties = n()) %>%
+  mutate(perc_of_total = number_of_properties/sum(number_of_properties)*100) %>%
+  ggplot() + 
+  geom_bar(aes(x = suburb, y = perc_of_total, fill = type),
+           stat = "identity") + 
+  labs(x = "Suburb", y = "% of properties")
+```
+
+## Practice Question 3 - Solution
+
+```{r eval=FALSE}
+melbourne_housing %>%
+  inner_join(suburb_data, by="suburb") %>%
+  filter(council_area == "Port Phillip City Council") %>%
+  group_by(suburb, type) %>%
+  summarise(number_of_properties = n()) %>%
+  mutate(perc_of_total = number_of_properties/sum(number_of_properties)*100) %>%
+  ggplot() + 
+  geom_bar(aes(x = suburb, y = perc_of_total, fill = type),
+           stat = "identity") + 
+  labs(x = "Suburb", y = "% of properties")
+```
+
+# Rmarkdown and related tools
+
+## Why Rmarkdown?
+
+- Rmarkdown is a system where you can put everything you learnt today together to produce reproducible anlaysis
+- Rmarkdown lets you combine code, results, and commentary into one place
+- Rmarkdown lets you use multiple languages (not just R but Python and SQL too) together
+- Rmarkdown lets you create multiple output formats - PDFs, HTMLs, Word Docs, Powerpoint (yes this one is built in Rmarkdown!), books, dashboards, blogs, shiny applications etc
+- Rmarkdown also lets you use the notebook feature - a popular data science tool 
+- Built using markdown, which is the easiest language ever created 
+
+## What we will learn today
+
+- Creating simple Rmarkdown documents 
+- Using Rmarkdown notebooks
+- Flexdashboard 
+- Very simple introduction to shiny
+
+<p>
+<img src = "https://d33wubrfki0l68.cloudfront.net/518c6867c530c6dee8722c9d8fa18df8af7f6cb1/71f4d/galleryimages/html.png"> <img src = "https://d33wubrfki0l68.cloudfront.net/dd978938797cada13cee7b3e2a88d7588a16ec1c/720af/galleryimages/dashboard2.png">
+</p>
+
+## Our very first Rmarkdown 
+
+- First we must install the `rmarkdown` package
+```{r eval=FALSE}
+install.packages("rmarkdown")
+```
+- Now open a .Rmd document from File > New File > R Markdown and choose a title like `My First RMarkdown`
+- You will find some example code in your newly opened file 
+- There are 4 different sections 
+    * YAML header
+    * Code Chunks (in grey)
+    * Headers after # 
+    * Plain text
+    
+## YAML Header 
+
+- The section right at the top between the `---` lines is called the YAML header
+- In the YAML header we specify attributes about the document like 
+    * Title
+    * Author
+    * Output style - Rmarkdown document, slides, dashboard etc 
+    * Other features - default image size, themes etc 
+- For our simple example lets just set the title and leave the output as a HTML document
+
+<img src =https://d33wubrfki0l68.cloudfront.net/6c8488fd88918d3c1ccac03cb22b66c4cb011809/a9f2f/lesson-images/code-1-options.png>
+
+## Code Chunks
+
+- The section in the grey bit is called code chunks. You can have as many as you want.
+- When you render (run) the Rmd file the code inside the chunk will be run and results will be embedded in the report
+- Lets try an example where we play with our `melbourne_housing` dataset and the last ggplot we created, but instead of the plot lets just print the data frame
+- Keep in mind that when you run a rmarkdown file, it is a new R session so we need the code for loading our data files. Insert this into your code chunk and hit the `knit` button
+```{r eval=FALSE}
+library(tidyverse)
+library(lubridate)
+
+melbourne_housing <- read_csv("C:/Workspace/r-learning/data/processed/melbourne_housing_market.csv")
+suburb_data <- read_csv("C:/Workspace/r-learning/data/processed/suburb_data.csv")
+
+melbourne_housing %>%
+  inner_join(suburb_data, by="suburb") %>%
+  filter(council_area == "Port Phillip City Council") %>%
+  group_by(suburb, type) %>%
+  summarise(number_of_properties = n()) %>%
+  mutate(perc_of_total = number_of_properties/sum(number_of_properties)*100)
+```
+
+## Code Chunks
+
+- For our second code chunk lets paste the 
 
 # Thank You

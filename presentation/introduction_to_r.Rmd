@@ -1407,6 +1407,160 @@ melbourne_housing %>%
 
 ## Code Chunks
 
-- For our second code chunk lets paste the 
+- For our second code chunk lets paste the entire code that prints out the ggplot as well
+```{r eval=FALSE}
+melbourne_housing %>%
+  inner_join(suburb_data, by="suburb") %>%
+  filter(council_area == "Port Phillip City Council") %>%
+  group_by(suburb, type) %>%
+  summarise(number_of_properties = n()) %>%
+  mutate(perc_of_total = number_of_properties/sum(number_of_properties)*100) %>%
+  ggplot() + 
+  geom_bar(aes(x = suburb, y = perc_of_total, fill = type),
+           stat = "identity") + 
+  labs(x = "Suburb", y = "% of properties")
+```
 
-# Thank You
+- Code chunk can be named if you wish 
+- Code chunks can also take several options in the format of `{r, echo=FALSE}`
+    * echo - To print the code chunk or not (prints only the output)
+    * eval - To evaluate the code chunk or not (prints only the code)
+    * warning - To print warnings or not 
+    * message - To print other R console messages or not 
+    * fig.width and fig.height - To specify sizes for charts
+    
+## Headers and Text
+
+- Rest of what goes in is just pure markdown syntax
+- Plain text appears as plain text
+- You can specify headers by using the `#` for level 1 header (big) `##` for level 2 header (slightly smaller) and so on 
+- You can insert bullet points by adding `- ` at the start of a line
+- You can bold text by wrapping it within starts like `**boldtext**`
+- You can display text it italics similarly like `*italics*`
+- You can also write Maths equations, put in links, use any standard HTML formatting etc if you want to
+- Try a few different things in your markdown by writing text, putting headers, making things bold etc 
+
+## Notebooks
+
+- Notebooks are a relatively new feature in R 
+- It takes after a popular concept in Python called Jupyter Notebooks and evolved it for R
+- If you notice in your Rmd file, the code section has a green coloured run button
+- Notebook allows you to run your code chunks and place the output immediately below so that you can test and iterate quickly
+- It is an excellent tool for exploratory data anlaysis as you can just keep trying stuff and seeing results immediately
+- It is also a great tool for a data science team if you want to share code and analysis, especially with version controlling
+- Notebooks create a .nb.html file every time you save your .RMd file where the results can be seen without having to knit the whole document
+
+## Flexdashboard
+
+- Flexdashboard is a Rmarkdown based system that allows you to group several elements like graphs, tables etc into a dashboard
+- Flexdashboard gives you several options to customise layout but makes it easy using markdown as opposed to web styling like CSS
+- To get started we must install the package and then FIle > New File > Rmarkdown > From Template > Flexdashboard
+
+```{r eval=FALSE}
+install.packages("flexdashboard")
+```
+
+<img src = "https://rmarkdown.rstudio.com/flexdashboard/images/htmlwidgets-d3heatmap.png">
+
+## Flexdashboard 
+
+- Just like regular markdown there is a YAML header section
+- There are code chunks where you write code to output charts or tables or anything else
+- Each of the `-----` lines denote a new column (or row if the YAML header is specified as Row)
+- Each of the `###` adds a new box where you can use the code chunk beneath it to place your code for your charts or tables
+- Lets try placing the same code from our previous Rmarkdown file into these boxes and see what happens when we knit the document 
+- Flexdashboards knit and create .html files which anyone use easily with just a browser
+- Flexdashboards also allow for interactivity using Shiny
+
+## Shiny
+
+- Shiny is a web application development framework
+- Built entirely in R so that you don't need to know the 1000 web app frameworks around today
+- You can build standalone shiny apps
+- Or you can add shiny elements to dashboards, Rmarkdown etc 
+- Today we will build a very simple flexdashboard with shiny elements to give ourselves an idea of what shiny is capable of
+
+## Very simple shiny app 
+
+- To make a regular flexdashboard a shiny app we must change a few things
+- In the YAML section let we have to add a line which will change the Knit button to Run document
+```{r eval=FALSE}
+---
+title: "Untitled"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+runtime: shiny
+---
+```
+
+## Very simple shiny app
+
+- Adding `{.sidebar}` to the first column of the dashboard will let R know that that column will be where the shiny input controls are
+
+- Now lets add this piece of code to the set up chunk defined above to load the data files (Remember the slide about every Rmd file being a new session)
+
+```{r eval=FALSE}
+library(tidyverse)
+library(lubridate)
+library(shiny)
+
+melbourne_housing <- read_csv("C:/Workspace/r-learning/data/processed/melbourne_housing_market.csv")
+suburb_data <- read_csv("C:/Workspace/r-learning/data/processed/suburb_data.csv")
+```
+
+- In the sidebar column, lets write a shiny function that places a select input box where the user of our dashboard can pick any suburb he wants from `suburb_data`
+
+```{r eval=FALSE}
+selectInput(inputId = "council_area_choice", 
+            label = "Select a Council Area",
+            choices = suburb_data %>% pull(council_area),
+            selected = "Port Phillip City Council")
+```
+
+## Very simple shiny app
+
+- The boxes in the second column can have the same two commands, for displaying the table and displaying the chart
+- But instead of hardcoding the value as Port Phillip City Council, we will say `input$council_area_choice` which will dynamically pass what the user picked and refresh the chart and table accordingly
+- One small change is, we need to put our code for the table and chart inside shiny's `render` family of functions like `renderTable` and `renderPlot`
+
+```{r eval=FALSE}
+renderTable({
+  melbourne_housing %>%
+  inner_join(suburb_data, by="suburb") %>%
+  filter(council_area == input$council_area_choice) %>%
+  group_by(suburb, type) %>%
+  summarise(number_of_properties = n()) %>%
+  mutate(perc_of_total = number_of_properties/sum(number_of_properties)*100)
+})
+```
+
+- Shiny allows for many such inputs like slider, date, text, radio button etc and they can all be passed as dynamic parmeters that change results making a dynamic report
+
+# Conclusion
+
+## What we have learnt
+
+- How to get started in R
+- Analysing and data wrangling using dplyr 
+- Visualising data using ggplot
+- Putting everything together using Rmarkdown tools 
+- That is a solid skill set to possess to do data analysis: Well done! 
+
+## Next Steps 
+
+- Lots of practice to get familiar with tools 
+- Advanced concepts and packages 
+    * Purrr for functional programming styles
+    * More detailed shiny apps
+    * Tidy evaluation for more dynamic code and less repetiion
+- Predictive Modelling (and lots of practice)
+- Keep trying things and learning things! 
+
+## Thank you
+
+- Thanks for spending your time today and being so patient learning
+- If you have any questions please don't hesitate to ask 
+- If you have questions after today while putting this into practice, please reach out at kaushiklakshman@gmail.com 
+- Thank you!
